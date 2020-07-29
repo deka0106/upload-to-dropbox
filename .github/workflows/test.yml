@@ -1,0 +1,27 @@
+name: "build-test"
+on:
+  push:
+    branches:
+      - main
+      - "releases/*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          npm install
+      - run: |
+          npm run all
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          echo "Hello" > file.txt
+      - uses: ./
+        with:
+          dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          file: file.txt
+          path: test
