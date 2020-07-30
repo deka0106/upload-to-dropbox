@@ -1,6 +1,9 @@
 name: "Upload to Dropbox"
 description: "Upload files to Dropbox"
 author: "Deka"
+branding:
+  icon: upload-cloud
+  color: blue
 inputs:
   dropbox_access_token:
     required: true
