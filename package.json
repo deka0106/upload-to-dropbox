@@ -22,7 +22,8 @@
   "author": "Deka <dekachan16@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.4"
+    "@actions/core": "^1.2.4",
+    "dropbox": "^5.2.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.7",
