@@ -21,5 +21,5 @@ Save the token as `DROPBOX_ACCESS_TOKEN` on your repository Secrets.
   with:
     dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
     file: dist/paper.pdf
-    path: thesis/my-thesis.pdf
+    path: /thesis/my-thesis.pdf
 ```
