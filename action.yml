@@ -15,6 +15,10 @@ inputs:
     required: false
     default: "/"
     description: "Destination path for upload. e.g. '/file.txt', '/dest/'"
+  mode:
+    required: false
+    default: "add"
+    description: "Upload mode: [add, overwrite]. default: add"
 runs:
   using: "node12"
   main: "dist/index.js"

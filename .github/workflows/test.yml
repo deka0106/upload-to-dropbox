@@ -27,6 +27,16 @@ jobs:
           dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
           src: file.txt
           dest: /test/my-file.txt
+      - name: Update file
+        run: |
+          echo "Hello updated" > file.txt
+      - name: Overwrite file on Dropbox
+        uses: ./
+        with:
+          dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          src: file.txt
+          dest: /test/my-file.txt
+          mode: overwrite
       - name: Create files
         run: |
           mkdir dist

@@ -9,6 +9,8 @@ const accessToken = core.getInput('dropbox_access_token')
 const src = core.getInput('src')
 const dest = core.getInput('dest')
 
+const mode = core.getInput('mode')
+
 async function run() {
   try {
     const files = await globby(src)
@@ -18,10 +20,10 @@ async function run() {
       const contents = await fs.promises.readFile(file)
       if (isDirectory(dest)) {
         const path = join(dest, file)
-        await upload(path, contents, accessToken)
+        await upload(path, contents, accessToken, mode)
         core.info(`Uploaded: ${file} -> ${path}`)
       } else {
-        await upload(dest, contents, accessToken)
+        await upload(dest, contents, accessToken, mode)
         core.info(`Uploaded: ${file} -> ${dest}`)
       }
     } else {
@@ -29,7 +31,7 @@ async function run() {
         files.map(async (file) => {
           const path = join(dest, file)
           const contents = await fs.promises.readFile(file)
-          await upload(path, contents, accessToken)
+          await upload(path, contents, accessToken, mode)
           core.info(`Uploaded: ${file} -> ${path}`)
         })
       )
