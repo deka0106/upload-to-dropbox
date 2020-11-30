@@ -18,10 +18,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
+      - name: Create file
+        run: |
           echo "Hello" > file.txt
-      - uses: ./
+      - name: Upload file on Dropbox
+        uses: ./
         with:
           dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
           file: file.txt
           path: /test/my-file.txt
+      - name: Update file
+        run: |
+          echo "Hello updated" > file.txt
+      - name: Overwrite file on Dropbox
+        uses: ./
+        with:
+          dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          file: file.txt
+          path: /test/my-file.txt
+          mode: overwrite
