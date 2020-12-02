@@ -17,9 +17,19 @@ Save the token as `DROPBOX_ACCESS_TOKEN` on your repository Secrets.
 ### Upload a file
 
 ```yaml
-- uses: deka0106/upload-to-dropbox@v1
+- uses: deka0106/upload-to-dropbox@v2
   with:
     dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-    file: dist/paper.pdf
-    path: /thesis/my-thesis.pdf
+    src: dist/paper.pdf
+    dest: /thesis/my-thesis.pdf
+```
+
+### Upload files
+
+```yaml
+- uses: deka0106/upload-to-dropbox@v2
+  with:
+    dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+    src: dist/**/*
+    dest: /dest/
 ```

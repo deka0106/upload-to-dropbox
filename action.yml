@@ -1,5 +1,5 @@
 name: "Upload to Dropbox"
-description: "Upload a file to Dropbox"
+description: "Upload files to Dropbox"
 author: "Deka"
 branding:
   icon: upload-cloud
@@ -8,12 +8,13 @@ inputs:
   dropbox_access_token:
     required: true
     description: "Dropbox access token"
-  file:
+  src:
     required: true
-    description: "File to upload to Dropbox"
-  path:
-    required: true
-    description: "Destination path for upload"
+    description: "File to upload to Dropbox. e.g. 'file.txt', '**/*.txt'"
+  dest:
+    required: false
+    default: "/"
+    description: "Destination path for upload. e.g. '/file.txt', '/dest/'"
 runs:
   using: "node12"
   main: "dist/index.js"
