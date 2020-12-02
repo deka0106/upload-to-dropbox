@@ -18,10 +18,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
+      - name: Create a file
+        run: |
           echo "Hello" > file.txt
-      - uses: ./
+      - name: Upload a file
+        uses: ./
         with:
           dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-          file: file.txt
-          path: /test/my-file.txt
+          src: file.txt
+          dest: /test/my-file.txt
+      - name: Create files
+        run: |
+          mkdir dist
+          echo "Hello" > dist/file-0.txt
+          echo "Hello" > dist/file-1.txt
+      - name: Upload files
+        uses: ./
+        with:
+          dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          src: dist/*.txt
+          dest: /test/
