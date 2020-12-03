@@ -39,12 +39,12 @@ jobs:
           mode: overwrite
       - name: Create files
         run: |
-          mkdir dist
-          echo "Hello" > dist/file-0.txt
-          echo "Hello" > dist/file-1.txt
+          mkdir files
+          echo "Hello" > files/file-0.txt
+          echo "Hello" > files/file-1.txt
       - name: Upload files
         uses: ./
         with:
           dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-          src: dist/*.txt
+          src: files/*.txt
           dest: /test/
