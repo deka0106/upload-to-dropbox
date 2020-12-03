@@ -3,16 +3,16 @@ import * as core from '@actions/core'
 import * as fs from 'fs'
 import { join, basename } from 'path'
 import { makeUpload } from './upload'
-import { isDirectory } from './utils'
+import { asBoolean, isDirectory } from './utils'
 
 const accessToken = core.getInput('dropbox_access_token')
 const src = core.getInput('src')
 const dest = core.getInput('dest')
-const multiple = core.getInput('multiple').toLowerCase() === 'true'
+const multiple = asBoolean(core.getInput('multiple'))
 
 const mode = core.getInput('mode')
-const autorename = core.getInput('autorename').toLowerCase() === 'true'
-const mute = core.getInput('mute').toLowerCase() === 'true'
+const autorename = asBoolean(core.getInput('autorename'))
+const mute = asBoolean(core.getInput('mute'))
 
 async function run() {
   try {
