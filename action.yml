@@ -18,7 +18,15 @@ inputs:
   mode:
     required: false
     default: "add"
-    description: "Upload mode: [add, overwrite]. default: add"
+    description: "What to do if the file already exists [add, overwrite]. default: add"
+  autorename:
+    required: false
+    default: "false"
+    description: "If there's a conflict, as determined by mode, have the Dropbox server try to autorename the file to avoid conflict. default: false"
+  mute:
+    required: false
+    default: "false"
+    description: "If true, this tells the clients that this modification shouldn't result in a user notification. default: false"
 runs:
   using: "node12"
   main: "dist/index.js"
