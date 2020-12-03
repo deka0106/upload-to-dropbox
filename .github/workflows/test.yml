@@ -42,9 +42,10 @@ jobs:
           mkdir files
           echo "Hello" > files/file-0.txt
           echo "Hello" > files/file-1.txt
-      - name: Upload files
+      - name: Upload multiple files
         uses: ./
         with:
           dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
           src: files/*.txt
           dest: /test/
+          multiple: true
