@@ -24,7 +24,7 @@ Save the token as `DROPBOX_ACCESS_TOKEN` on your repository Secrets.
     dest: /thesis/
 ```
 
-### Upload a file (overwrite)
+### Upload a file with overwrite mode
 
 ```yaml
 - uses: deka0106/upload-to-dropbox@v2
@@ -45,7 +45,7 @@ Save the token as `DROPBOX_ACCESS_TOKEN` on your repository Secrets.
     dest: /thesis/my-thesis.pdf
 ```
 
-### Upload files
+### Upload multiple files
 
 ```yaml
 - uses: deka0106/upload-to-dropbox@v2
@@ -53,4 +53,5 @@ Save the token as `DROPBOX_ACCESS_TOKEN` on your repository Secrets.
     dropbox_access_token: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
     src: dist/**/*
     dest: /dest/
+    multiple: true
 ```
