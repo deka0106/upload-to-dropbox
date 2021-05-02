@@ -44,6 +44,8 @@ async function run() {
     if (error instanceof DropboxResponseError) {
       core.error(error.error)
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    core.error(error?.error)
     core.setFailed(error)
   }
 }
