@@ -1,9 +1,8 @@
-require('./sourcemap-register.js');module.exports =
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 3109:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
@@ -30,12 +29,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const globby_1 = __importDefault(__webpack_require__(3398));
-const core = __importStar(__webpack_require__(2186));
-const fs = __importStar(__webpack_require__(5747));
-const path_1 = __webpack_require__(5622);
-const upload_1 = __webpack_require__(4831);
-const utils_1 = __webpack_require__(918);
+const globby_1 = __importDefault(__nccwpck_require__(3398));
+const core = __importStar(__nccwpck_require__(2186));
+const fs = __importStar(__nccwpck_require__(5747));
+const path_1 = __nccwpck_require__(5622);
+const upload_1 = __nccwpck_require__(4831);
+const utils_1 = __nccwpck_require__(918);
+const dropbox_1 = __nccwpck_require__(8939);
 const accessToken = core.getInput('dropbox_access_token');
 const src = core.getInput('src');
 const dest = core.getInput('dest');
@@ -69,6 +69,9 @@ async function run() {
         }
     }
     catch (error) {
+        if (error instanceof dropbox_1.DropboxResponseError) {
+            core.error(error.error);
+        }
         core.setFailed(error);
     }
 }
@@ -78,7 +81,7 @@ void run();
 /***/ }),
 
 /***/ 4831:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
@@ -87,8 +90,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.makeUpload = void 0;
-const dropbox_1 = __webpack_require__(8939);
-const node_fetch_1 = __importDefault(__webpack_require__(467));
+const dropbox_1 = __nccwpck_require__(8939);
+const node_fetch_1 = __importDefault(__nccwpck_require__(467));
 function makeUpload(accessToken) {
     const dropbox = new dropbox_1.Dropbox({ accessToken, fetch: node_fetch_1.default });
     return {
@@ -141,7 +144,7 @@ exports.asBoolean = asBoolean;
 /***/ }),
 
 /***/ 7351:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
@@ -153,8 +156,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const os = __importStar(__webpack_require__(2087));
-const utils_1 = __webpack_require__(5278);
+const os = __importStar(__nccwpck_require__(2087));
+const utils_1 = __nccwpck_require__(5278);
 /**
  * Commands
  *
@@ -227,7 +230,7 @@ function escapeProperty(s) {
 /***/ }),
 
 /***/ 2186:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
@@ -248,11 +251,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const command_1 = __webpack_require__(7351);
-const file_command_1 = __webpack_require__(717);
-const utils_1 = __webpack_require__(5278);
-const os = __importStar(__webpack_require__(2087));
-const path = __importStar(__webpack_require__(5622));
+const command_1 = __nccwpck_require__(7351);
+const file_command_1 = __nccwpck_require__(717);
+const utils_1 = __nccwpck_require__(5278);
+const os = __importStar(__nccwpck_require__(2087));
+const path = __importStar(__nccwpck_require__(5622));
 /**
  * The code to exit an action
  */
@@ -336,6 +339,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
@@ -472,7 +476,7 @@ exports.getState = getState;
 /***/ }),
 
 /***/ 717:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
@@ -487,9 +491,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const fs = __importStar(__webpack_require__(5747));
-const os = __importStar(__webpack_require__(2087));
-const utils_1 = __webpack_require__(5278);
+const fs = __importStar(__nccwpck_require__(5747));
+const os = __importStar(__nccwpck_require__(2087));
+const utils_1 = __nccwpck_require__(5278);
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
@@ -534,12 +538,13 @@ exports.toCommandValue = toCommandValue;
 /***/ }),
 
 /***/ 3803:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fs = __webpack_require__(5747);
+exports.createFileSystemAdapter = exports.FILE_SYSTEM_ADAPTER = void 0;
+const fs = __nccwpck_require__(5747);
 exports.FILE_SYSTEM_ADAPTER = {
     lstat: fs.lstat,
     stat: fs.stat,
@@ -565,6 +570,7 @@ exports.createFileSystemAdapter = createFileSystemAdapter;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.IS_SUPPORT_READDIR_WITH_FILE_TYPES = void 0;
 const NODE_PROCESS_VERSION_PARTS = process.versions.node.split('.');
 const MAJOR_VERSION = parseInt(NODE_PROCESS_VERSION_PARTS[0], 10);
 const MINOR_VERSION = parseInt(NODE_PROCESS_VERSION_PARTS[1], 10);
@@ -581,14 +587,15 @@ exports.IS_SUPPORT_READDIR_WITH_FILE_TYPES = IS_MATCHED_BY_MAJOR || IS_MATCHED_B
 /***/ }),
 
 /***/ 5667:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const async = __webpack_require__(4507);
-const sync = __webpack_require__(9560);
-const settings_1 = __webpack_require__(8662);
+exports.Settings = exports.scandirSync = exports.scandir = void 0;
+const async = __nccwpck_require__(4507);
+const sync = __nccwpck_require__(9560);
+const settings_1 = __nccwpck_require__(8662);
 exports.Settings = settings_1.default;
 function scandir(path, optionsOrSettingsOrCallback, callback) {
     if (typeof optionsOrSettingsOrCallback === 'function') {
@@ -613,15 +620,17 @@ function getSettings(settingsOrOptions = {}) {
 /***/ }),
 
 /***/ 4507:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fsStat = __webpack_require__(109);
-const rpl = __webpack_require__(5288);
-const constants_1 = __webpack_require__(8838);
-const utils = __webpack_require__(6297);
+exports.readdir = exports.readdirWithFileTypes = exports.read = void 0;
+const fsStat = __nccwpck_require__(109);
+const rpl = __nccwpck_require__(5288);
+const constants_1 = __nccwpck_require__(8838);
+const utils = __nccwpck_require__(6297);
+const common = __nccwpck_require__(3847);
 function read(directory, settings, callback) {
     if (!settings.stats && constants_1.IS_SUPPORT_READDIR_WITH_FILE_TYPES) {
         return readdirWithFileTypes(directory, settings, callback);
@@ -637,7 +646,7 @@ function readdirWithFileTypes(directory, settings, callback) {
         const entries = dirents.map((dirent) => ({
             dirent,
             name: dirent.name,
-            path: `${directory}${settings.pathSegmentSeparator}${dirent.name}`
+            path: common.joinPathSegments(directory, dirent.name, settings.pathSegmentSeparator)
         }));
         if (!settings.followSymbolicLinks) {
             return callSuccessCallback(callback, entries);
@@ -674,7 +683,7 @@ function readdir(directory, settings, callback) {
         if (readdirError !== null) {
             return callFailureCallback(callback, readdirError);
         }
-        const filepaths = names.map((name) => `${directory}${settings.pathSegmentSeparator}${name}`);
+        const filepaths = names.map((name) => common.joinPathSegments(directory, name, settings.pathSegmentSeparator));
         const tasks = filepaths.map((filepath) => {
             return (done) => fsStat.stat(filepath, settings.fsStatSettings, done);
         });
@@ -710,15 +719,38 @@ function callSuccessCallback(callback, result) {
 
 /***/ }),
 
-/***/ 9560:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ 3847:
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fsStat = __webpack_require__(109);
-const constants_1 = __webpack_require__(8838);
-const utils = __webpack_require__(6297);
+exports.joinPathSegments = void 0;
+function joinPathSegments(a, b, separator) {
+    /**
+     * The correct handling of cases when the first segment is a root (`/`, `C:/`) or UNC path (`//?/C:/`).
+     */
+    if (a.endsWith(separator)) {
+        return a + b;
+    }
+    return a + separator + b;
+}
+exports.joinPathSegments = joinPathSegments;
+
+
+/***/ }),
+
+/***/ 9560:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.readdir = exports.readdirWithFileTypes = exports.read = void 0;
+const fsStat = __nccwpck_require__(109);
+const constants_1 = __nccwpck_require__(8838);
+const utils = __nccwpck_require__(6297);
+const common = __nccwpck_require__(3847);
 function read(directory, settings) {
     if (!settings.stats && constants_1.IS_SUPPORT_READDIR_WITH_FILE_TYPES) {
         return readdirWithFileTypes(directory, settings);
@@ -732,7 +764,7 @@ function readdirWithFileTypes(directory, settings) {
         const entry = {
             dirent,
             name: dirent.name,
-            path: `${directory}${settings.pathSegmentSeparator}${dirent.name}`
+            path: common.joinPathSegments(directory, dirent.name, settings.pathSegmentSeparator)
         };
         if (entry.dirent.isSymbolicLink() && settings.followSymbolicLinks) {
             try {
@@ -752,7 +784,7 @@ exports.readdirWithFileTypes = readdirWithFileTypes;
 function readdir(directory, settings) {
     const names = settings.fs.readdirSync(directory);
     return names.map((name) => {
-        const entryPath = `${directory}${settings.pathSegmentSeparator}${name}`;
+        const entryPath = common.joinPathSegments(directory, name, settings.pathSegmentSeparator);
         const stats = fsStat.statSync(entryPath, settings.fsStatSettings);
         const entry = {
             name,
@@ -771,14 +803,14 @@ exports.readdir = readdir;
 /***/ }),
 
 /***/ 8662:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const path = __webpack_require__(5622);
-const fsStat = __webpack_require__(109);
-const fs = __webpack_require__(3803);
+const path = __nccwpck_require__(5622);
+const fsStat = __nccwpck_require__(109);
+const fs = __nccwpck_require__(3803);
 class Settings {
     constructor(_options = {}) {
         this._options = _options;
@@ -794,7 +826,7 @@ class Settings {
         });
     }
     _getValue(option, value) {
-        return option === undefined ? value : option;
+        return option !== null && option !== void 0 ? option : value;
     }
 }
 exports.default = Settings;
@@ -808,6 +840,7 @@ exports.default = Settings;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createDirentFromStats = void 0;
 class DirentFromStats {
     constructor(name, stats) {
         this.name = name;
@@ -829,24 +862,26 @@ exports.createDirentFromStats = createDirentFromStats;
 /***/ }),
 
 /***/ 6297:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fs = __webpack_require__(883);
+exports.fs = void 0;
+const fs = __nccwpck_require__(883);
 exports.fs = fs;
 
 
 /***/ }),
 
 /***/ 2987:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fs = __webpack_require__(5747);
+exports.createFileSystemAdapter = exports.FILE_SYSTEM_ADAPTER = void 0;
+const fs = __nccwpck_require__(5747);
 exports.FILE_SYSTEM_ADAPTER = {
     lstat: fs.lstat,
     stat: fs.stat,
@@ -865,14 +900,15 @@ exports.createFileSystemAdapter = createFileSystemAdapter;
 /***/ }),
 
 /***/ 109:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const async = __webpack_require__(4147);
-const sync = __webpack_require__(4527);
-const settings_1 = __webpack_require__(2410);
+exports.statSync = exports.stat = exports.Settings = void 0;
+const async = __nccwpck_require__(4147);
+const sync = __nccwpck_require__(4527);
+const settings_1 = __nccwpck_require__(2410);
 exports.Settings = settings_1.default;
 function stat(path, optionsOrSettingsOrCallback, callback) {
     if (typeof optionsOrSettingsOrCallback === 'function') {
@@ -902,6 +938,7 @@ function getSettings(settingsOrOptions = {}) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.read = void 0;
 function read(path, settings, callback) {
     settings.fs.lstat(path, (lstatError, lstat) => {
         if (lstatError !== null) {
@@ -941,6 +978,7 @@ function callSuccessCallback(callback, result) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.read = void 0;
 function read(path, settings) {
     const lstat = settings.fs.lstatSync(path);
     if (!lstat.isSymbolicLink() || !settings.followSymbolicLink) {
@@ -966,12 +1004,12 @@ exports.read = read;
 /***/ }),
 
 /***/ 2410:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fs = __webpack_require__(2987);
+const fs = __nccwpck_require__(2987);
 class Settings {
     constructor(_options = {}) {
         this._options = _options;
@@ -981,7 +1019,7 @@ class Settings {
         this.throwErrorOnBrokenSymbolicLink = this._getValue(this._options.throwErrorOnBrokenSymbolicLink, true);
     }
     _getValue(option, value) {
-        return option === undefined ? value : option;
+        return option !== null && option !== void 0 ? option : value;
     }
 }
 exports.default = Settings;
@@ -990,15 +1028,16 @@ exports.default = Settings;
 /***/ }),
 
 /***/ 6026:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const async_1 = __webpack_require__(7523);
-const stream_1 = __webpack_require__(6737);
-const sync_1 = __webpack_require__(3068);
-const settings_1 = __webpack_require__(141);
+exports.Settings = exports.walkStream = exports.walkSync = exports.walk = void 0;
+const async_1 = __nccwpck_require__(7523);
+const stream_1 = __nccwpck_require__(6737);
+const sync_1 = __nccwpck_require__(3068);
+const settings_1 = __nccwpck_require__(141);
 exports.Settings = settings_1.default;
 function walk(directory, optionsOrSettingsOrCallback, callback) {
     if (typeof optionsOrSettingsOrCallback === 'function') {
@@ -1030,12 +1069,12 @@ function getSettings(settingsOrOptions = {}) {
 /***/ }),
 
 /***/ 7523:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const async_1 = __webpack_require__(5732);
+const async_1 = __nccwpck_require__(5732);
 class AsyncProvider {
     constructor(_root, _settings) {
         this._root = _root;
@@ -1068,13 +1107,13 @@ function callSuccessCallback(callback, entries) {
 /***/ }),
 
 /***/ 6737:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const stream_1 = __webpack_require__(2413);
-const async_1 = __webpack_require__(5732);
+const stream_1 = __nccwpck_require__(2413);
+const async_1 = __nccwpck_require__(5732);
 class StreamProvider {
     constructor(_root, _settings) {
         this._root = _root;
@@ -1083,7 +1122,11 @@ class StreamProvider {
         this._stream = new stream_1.Readable({
             objectMode: true,
             read: () => { },
-            destroy: this._reader.destroy.bind(this._reader)
+            destroy: () => {
+                if (!this._reader.isDestroyed) {
+                    this._reader.destroy();
+                }
+            }
         });
     }
     read() {
@@ -1106,12 +1149,12 @@ exports.default = StreamProvider;
 /***/ }),
 
 /***/ 3068:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const sync_1 = __webpack_require__(3595);
+const sync_1 = __nccwpck_require__(3595);
 class SyncProvider {
     constructor(_root, _settings) {
         this._root = _root;
@@ -1128,16 +1171,16 @@ exports.default = SyncProvider;
 /***/ }),
 
 /***/ 5732:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const events_1 = __webpack_require__(8614);
-const fsScandir = __webpack_require__(5667);
-const fastq = __webpack_require__(7340);
-const common = __webpack_require__(7988);
-const reader_1 = __webpack_require__(8311);
+const events_1 = __nccwpck_require__(8614);
+const fsScandir = __nccwpck_require__(5667);
+const fastq = __nccwpck_require__(7340);
+const common = __nccwpck_require__(7988);
+const reader_1 = __nccwpck_require__(8311);
 class AsyncReader extends reader_1.default {
     constructor(_root, _settings) {
         super(_root, _settings);
@@ -1160,6 +1203,9 @@ class AsyncReader extends reader_1.default {
             this._pushToQueue(this._root, this._settings.basePath);
         });
         return this._emitter;
+    }
+    get isDestroyed() {
+        return this._isDestroyed;
     }
     destroy() {
         if (this._isDestroyed) {
@@ -1197,7 +1243,7 @@ class AsyncReader extends reader_1.default {
         });
     }
     _handleError(error) {
-        if (!common.isFatalError(this._settings, error)) {
+        if (this._isDestroyed || !common.isFatalError(this._settings, error)) {
             return;
         }
         this._isFatalError = true;
@@ -1234,6 +1280,7 @@ exports.default = AsyncReader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.joinPathSegments = exports.replacePathSegmentSeparator = exports.isAppliedFilter = exports.isFatalError = void 0;
 function isFatalError(settings, error) {
     if (settings.errorFilter === null) {
         return true;
@@ -1246,12 +1293,18 @@ function isAppliedFilter(filter, value) {
 }
 exports.isAppliedFilter = isAppliedFilter;
 function replacePathSegmentSeparator(filepath, separator) {
-    return filepath.split(/[\\/]/).join(separator);
+    return filepath.split(/[/\\]/).join(separator);
 }
 exports.replacePathSegmentSeparator = replacePathSegmentSeparator;
 function joinPathSegments(a, b, separator) {
     if (a === '') {
         return b;
+    }
+    /**
+     * The correct handling of cases when the first segment is a root (`/`, `C:/`) or UNC path (`//?/C:/`).
+     */
+    if (a.endsWith(separator)) {
+        return a + b;
     }
     return a + separator + b;
 }
@@ -1261,12 +1314,12 @@ exports.joinPathSegments = joinPathSegments;
 /***/ }),
 
 /***/ 8311:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const common = __webpack_require__(7988);
+const common = __nccwpck_require__(7988);
 class Reader {
     constructor(_root, _settings) {
         this._root = _root;
@@ -1280,14 +1333,14 @@ exports.default = Reader;
 /***/ }),
 
 /***/ 3595:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fsScandir = __webpack_require__(5667);
-const common = __webpack_require__(7988);
-const reader_1 = __webpack_require__(8311);
+const fsScandir = __nccwpck_require__(5667);
+const common = __nccwpck_require__(7988);
+const reader_1 = __nccwpck_require__(8311);
 class SyncReader extends reader_1.default {
     constructor() {
         super(...arguments);
@@ -1347,13 +1400,13 @@ exports.default = SyncReader;
 /***/ }),
 
 /***/ 141:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const path = __webpack_require__(5622);
-const fsScandir = __webpack_require__(5667);
+const path = __nccwpck_require__(5622);
+const fsScandir = __nccwpck_require__(5667);
 class Settings {
     constructor(_options = {}) {
         this._options = _options;
@@ -1372,7 +1425,7 @@ class Settings {
         });
     }
     _getValue(option, value) {
-        return option === undefined ? value : option;
+        return option !== null && option !== void 0 ? option : value;
     }
 }
 exports.default = Settings;
@@ -1394,15 +1447,15 @@ module.exports = (...arguments_) => {
 /***/ }),
 
 /***/ 610:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const stringify = __webpack_require__(8750);
-const compile = __webpack_require__(9434);
-const expand = __webpack_require__(5873);
-const parse = __webpack_require__(6477);
+const stringify = __nccwpck_require__(8750);
+const compile = __nccwpck_require__(9434);
+const expand = __nccwpck_require__(5873);
+const parse = __nccwpck_require__(6477);
 
 /**
  * Expand the given pattern or create a regex-compatible string.
@@ -1572,13 +1625,13 @@ module.exports = braces;
 /***/ }),
 
 /***/ 9434:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const fill = __webpack_require__(6330);
-const utils = __webpack_require__(5207);
+const fill = __nccwpck_require__(6330);
+const utils = __nccwpck_require__(5207);
 
 const compile = (ast, options = {}) => {
   let walk = (node, parent = {}) => {
@@ -1702,14 +1755,14 @@ module.exports = {
 /***/ }),
 
 /***/ 5873:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const fill = __webpack_require__(6330);
-const stringify = __webpack_require__(8750);
-const utils = __webpack_require__(5207);
+const fill = __nccwpck_require__(6330);
+const stringify = __nccwpck_require__(8750);
+const utils = __nccwpck_require__(5207);
 
 const append = (queue = '', stash = '', enclose = false) => {
   let result = [];
@@ -1823,12 +1876,12 @@ module.exports = expand;
 /***/ }),
 
 /***/ 6477:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const stringify = __webpack_require__(8750);
+const stringify = __nccwpck_require__(8750);
 
 /**
  * Constants
@@ -1850,7 +1903,7 @@ const {
   CHAR_SINGLE_QUOTE, /* ' */
   CHAR_NO_BREAK_SPACE,
   CHAR_ZERO_WIDTH_NOBREAK_SPACE
-} = __webpack_require__(8774);
+} = __nccwpck_require__(8774);
 
 /**
  * parse
@@ -2164,12 +2217,12 @@ module.exports = parse;
 /***/ }),
 
 /***/ 8750:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const utils = __webpack_require__(5207);
+const utils = __nccwpck_require__(5207);
 
 module.exports = (ast, options = {}) => {
   let stringify = (node, parent = {}) => {
@@ -2324,12 +2377,12 @@ exports.flatten = (...args) => {
 /***/ }),
 
 /***/ 2738:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
-const path = __webpack_require__(5622);
-const pathType = __webpack_require__(3433);
+const path = __nccwpck_require__(5622);
+const pathType = __nccwpck_require__(3433);
 
 const getExtensions = extensions => extensions.length > 1 ? `{${extensions.join(',')}}` : extensions[0];
 
@@ -2407,7 +2460,7 @@ module.exports.sync = (input, options) => {
 /***/ }),
 
 /***/ 8939:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -2416,7 +2469,7 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
-var _dropbox = __webpack_require__(6258);
+var _dropbox = __nccwpck_require__(6258);
 
 Object.defineProperty(exports, "Dropbox", ({
   enumerable: true,
@@ -2425,7 +2478,7 @@ Object.defineProperty(exports, "Dropbox", ({
   }
 }));
 
-var _auth = __webpack_require__(2361);
+var _auth = __nccwpck_require__(2361);
 
 Object.defineProperty(exports, "DropboxAuth", ({
   enumerable: true,
@@ -2469,7 +2522,9 @@ routes.authTokenFromOauth1 = function (arg) {
   return this.request('auth/token/from_oauth1', arg, 'app', 'api', 'rpc');
 };
 /**
- * Disables the access token used to authenticate the call.
+ * Disables the access token used to authenticate the call. If there is a
+ * corresponding refresh token for the access token, this disables that refresh
+ * token, as well as any other access tokens for that refresh token.
  * @function Dropbox#authTokenRevoke
  * @returns {Promise.<DropboxResponse<void>, Error.<void>>}
  */
@@ -3088,8 +3143,9 @@ routes.filesDownload = function (arg) {
 };
 /**
  * Download a folder from the user's Dropbox, as a zip file. The folder must be
- * less than 20 GB in size and have fewer than 10,000 total files. The input
- * cannot be a single file. Any single file must be less than 4GB in size.
+ * less than 20 GB in size and any single file within must be less than 4 GB in
+ * size. The resulting zip must have fewer than 10,000 total file and folder
+ * entries, including the top level folder. The input cannot be a single file.
  * @function Dropbox#filesDownloadZip
  * @arg {FilesDownloadZipArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<FilesDownloadZipResult>, Error.<FilesDownloadZipError>>}
@@ -3204,8 +3260,8 @@ routes.filesGetTemporaryUploadLink = function (arg) {
 };
 /**
  * Get a thumbnail for an image. This method currently supports files with the
- * following file extensions: jpg, jpeg, png, tiff, tif, gif and bmp. Photos
- * that are larger than 20MB in size won't be converted to a thumbnail.
+ * following file extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp.
+ * Photos that are larger than 20MB in size won't be converted to a thumbnail.
  * @function Dropbox#filesGetThumbnail
  * @arg {FilesThumbnailArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<FilesFileMetadata>, Error.<FilesThumbnailError>>}
@@ -3216,7 +3272,9 @@ routes.filesGetThumbnail = function (arg) {
   return this.request('files/get_thumbnail', arg, 'user', 'content', 'download');
 };
 /**
- * Get a thumbnail for a file.
+ * Get a thumbnail for an image. This method currently supports files with the
+ * following file extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp.
+ * Photos that are larger than 20MB in size won't be converted to a thumbnail.
  * @function Dropbox#filesGetThumbnailV2
  * @arg {FilesThumbnailV2Arg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<FilesPreviewResult>, Error.<FilesThumbnailV2Error>>}
@@ -3229,8 +3287,8 @@ routes.filesGetThumbnailV2 = function (arg) {
 /**
  * Get thumbnails for a list of images. We allow up to 25 thumbnails in a single
  * batch. This method currently supports files with the following file
- * extensions: jpg, jpeg, png, tiff, tif, gif and bmp. Photos that are larger
- * than 20MB in size won't be converted to a thumbnail.
+ * extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp. Photos that
+ * are larger than 20MB in size won't be converted to a thumbnail.
  * @function Dropbox#filesGetThumbnailBatch
  * @arg {FilesGetThumbnailBatchArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<FilesGetThumbnailBatchResult>, Error.<FilesGetThumbnailBatchError>>}
@@ -3426,6 +3484,28 @@ routes.filesMoveBatchCheckV2 = function (arg) {
 
 routes.filesMoveBatchCheck = function (arg) {
   return this.request('files/move_batch/check', arg, 'user', 'api', 'rpc');
+};
+/**
+ * Creates a new Paper doc with the provided content.
+ * @function Dropbox#filesPaperCreate
+ * @arg {FilesPaperCreateArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<FilesPaperCreateResult>, Error.<FilesPaperCreateError>>}
+ */
+
+
+routes.filesPaperCreate = function (arg) {
+  return this.request('files/paper/create', arg, 'user', 'api', 'upload');
+};
+/**
+ * Updates an existing Paper doc with the provided content.
+ * @function Dropbox#filesPaperUpdate
+ * @arg {FilesPaperUpdateArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<FilesPaperUpdateResult>, Error.<FilesPaperUpdateError>>}
+ */
+
+
+routes.filesPaperUpdate = function (arg) {
+  return this.request('files/paper/update', arg, 'user', 'api', 'upload');
 };
 /**
  * Permanently delete the file or folder at a given path (see
@@ -3715,13 +3795,13 @@ routes.filesUploadSessionFinishBatchCheck = function (arg) {
  * upload_session/append_v2 to add more data and upload_session/finish to save
  * all the data to a file in Dropbox. A single request should not upload more
  * than 150 MB. The maximum size of a file one can upload to an upload session
- * is 350 GB. An upload session can be used for a maximum of 48 hours.
- * Attempting to use an UploadSessionStartResult.session_id with
- * upload_session/append_v2 or upload_session/finish more than 48 hours after
- * its creation will return a UploadSessionLookupError.not_found. Calls to this
- * endpoint will count as data transport calls for any Dropbox Business teams
- * with a limit on the number of data transport calls allowed per month. For
- * more information, see the Data transport limit page
+ * is 350 GB. An upload session can be used for a maximum of 7 days. Attempting
+ * to use an UploadSessionStartResult.session_id with upload_session/append_v2
+ * or upload_session/finish more than 7 days after its creation will return a
+ * UploadSessionLookupError.not_found. Calls to this endpoint will count as data
+ * transport calls for any Dropbox Business teams with a limit on the number of
+ * data transport calls allowed per month. For more information, see the Data
+ * transport limit page
  * https://www.dropbox.com/developers/reference/data-transport-limit. By
  * default, upload sessions require you to send content of the file in
  * sequential order via consecutive upload_session/start,
@@ -5094,6 +5174,27 @@ routes.teamMemberSpaceLimitsSetCustomQuota = function (arg) {
  * initial given_name and surname for a user to use in the team invitation and
  * for 'Perform as team member' actions taken on the user before they become
  * 'active'.
+ * @function Dropbox#teamMembersAddV2
+ * @arg {TeamMembersAddV2Arg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamMembersAddLaunchV2Result>, Error.<void>>}
+ */
+
+
+routes.teamMembersAddV2 = function (arg) {
+  return this.request('team/members/add_v2', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Adds members to a team. Permission : Team member management A maximum of 20
+ * members can be specified in a single call. If no Dropbox account exists with
+ * the email address specified, a new Dropbox account will be created with the
+ * given email address, and that account will be invited to the team. If a
+ * personal Dropbox account exists with the email address specified in the call,
+ * this call will create a placeholder Dropbox account for the user on the team
+ * and send an email inviting the user to migrate their existing personal
+ * account onto the team. Team member management apps are required to set an
+ * initial given_name and surname for a user to use in the team invitation and
+ * for 'Perform as team member' actions taken on the user before they become
+ * 'active'.
  * @function Dropbox#teamMembersAdd
  * @arg {TeamMembersAddArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<TeamMembersAddLaunch>, Error.<void>>}
@@ -5102,6 +5203,18 @@ routes.teamMemberSpaceLimitsSetCustomQuota = function (arg) {
 
 routes.teamMembersAdd = function (arg) {
   return this.request('team/members/add', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Once an async_job_id is returned from members/add_v2 , use this to poll the
+ * status of the asynchronous request. Permission : Team member management.
+ * @function Dropbox#teamMembersAddJobStatusGetV2
+ * @arg {AsyncPollArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamMembersAddJobStatusV2Result>, Error.<AsyncPollError>>}
+ */
+
+
+routes.teamMembersAddJobStatusGetV2 = function (arg) {
+  return this.request('team/members/add/job_status/get_v2', arg, 'team', 'api', 'rpc');
 };
 /**
  * Once an async_job_id is returned from members/add , use this to poll the
@@ -5117,6 +5230,17 @@ routes.teamMembersAddJobStatusGet = function (arg) {
 };
 /**
  * Deletes a team member's profile photo. Permission : Team member management.
+ * @function Dropbox#teamMembersDeleteProfilePhotoV2
+ * @arg {TeamMembersDeleteProfilePhotoArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamTeamMemberInfoV2Result>, Error.<TeamMembersDeleteProfilePhotoError>>}
+ */
+
+
+routes.teamMembersDeleteProfilePhotoV2 = function (arg) {
+  return this.request('team/members/delete_profile_photo_v2', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Deletes a team member's profile photo. Permission : Team member management.
  * @function Dropbox#teamMembersDeleteProfilePhoto
  * @arg {TeamMembersDeleteProfilePhotoArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<TeamTeamMemberInfo>, Error.<TeamMembersDeleteProfilePhotoError>>}
@@ -5125,6 +5249,30 @@ routes.teamMembersAddJobStatusGet = function (arg) {
 
 routes.teamMembersDeleteProfilePhoto = function (arg) {
   return this.request('team/members/delete_profile_photo', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Get available TeamMemberRoles for the connected team. To be used with
+ * members/set_admin_permissions_v2. Permission : Team member management.
+ * @function Dropbox#teamMembersGetAvailableTeamMemberRoles
+ * @returns {Promise.<DropboxResponse<TeamMembersGetAvailableTeamMemberRolesResult>, Error.<void>>}
+ */
+
+
+routes.teamMembersGetAvailableTeamMemberRoles = function () {
+  return this.request('team/members/get_available_team_member_roles', null, 'team', 'api', 'rpc');
+};
+/**
+ * Returns information about multiple team members. Permission : Team
+ * information This endpoint will return MembersGetInfoItem.id_not_found, for
+ * IDs (or emails) that cannot be matched to a valid team member.
+ * @function Dropbox#teamMembersGetInfoV2
+ * @arg {TeamMembersGetInfoV2Arg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamMembersGetInfoV2Result>, Error.<TeamMembersGetInfoError>>}
+ */
+
+
+routes.teamMembersGetInfoV2 = function (arg) {
+  return this.request('team/members/get_info_v2', arg, 'team', 'api', 'rpc');
 };
 /**
  * Returns information about multiple team members. Permission : Team
@@ -5141,6 +5289,17 @@ routes.teamMembersGetInfo = function (arg) {
 };
 /**
  * Lists members of a team. Permission : Team information.
+ * @function Dropbox#teamMembersListV2
+ * @arg {TeamMembersListArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamMembersListV2Result>, Error.<TeamMembersListError>>}
+ */
+
+
+routes.teamMembersListV2 = function (arg) {
+  return this.request('team/members/list_v2', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Lists members of a team. Permission : Team information.
  * @function Dropbox#teamMembersList
  * @arg {TeamMembersListArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<TeamMembersListResult>, Error.<TeamMembersListError>>}
@@ -5149,6 +5308,18 @@ routes.teamMembersGetInfo = function (arg) {
 
 routes.teamMembersList = function (arg) {
   return this.request('team/members/list', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Once a cursor has been retrieved from members/list_v2, use this to paginate
+ * through all team members. Permission : Team information.
+ * @function Dropbox#teamMembersListContinueV2
+ * @arg {TeamMembersListContinueArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamMembersListV2Result>, Error.<TeamMembersListContinueError>>}
+ */
+
+
+routes.teamMembersListContinueV2 = function (arg) {
+  return this.request('team/members/list/continue_v2', arg, 'team', 'api', 'rpc');
 };
 /**
  * Once a cursor has been retrieved from members/list, use this to paginate
@@ -5288,6 +5459,17 @@ routes.teamMembersSendWelcomeEmail = function (arg) {
 };
 /**
  * Updates a team member's permissions. Permission : Team member management.
+ * @function Dropbox#teamMembersSetAdminPermissionsV2
+ * @arg {TeamMembersSetPermissions2Arg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamMembersSetPermissions2Result>, Error.<TeamMembersSetPermissions2Error>>}
+ */
+
+
+routes.teamMembersSetAdminPermissionsV2 = function (arg) {
+  return this.request('team/members/set_admin_permissions_v2', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Updates a team member's permissions. Permission : Team member management.
  * @function Dropbox#teamMembersSetAdminPermissions
  * @arg {TeamMembersSetPermissionsArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<TeamMembersSetPermissionsResult>, Error.<TeamMembersSetPermissionsError>>}
@@ -5299,6 +5481,17 @@ routes.teamMembersSetAdminPermissions = function (arg) {
 };
 /**
  * Updates a team member's profile. Permission : Team member management.
+ * @function Dropbox#teamMembersSetProfileV2
+ * @arg {TeamMembersSetProfileArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamTeamMemberInfoV2Result>, Error.<TeamMembersSetProfileError>>}
+ */
+
+
+routes.teamMembersSetProfileV2 = function (arg) {
+  return this.request('team/members/set_profile_v2', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Updates a team member's profile. Permission : Team member management.
  * @function Dropbox#teamMembersSetProfile
  * @arg {TeamMembersSetProfileArg} arg - The request parameters.
  * @returns {Promise.<DropboxResponse<TeamTeamMemberInfo>, Error.<TeamMembersSetProfileError>>}
@@ -5307,6 +5500,17 @@ routes.teamMembersSetAdminPermissions = function (arg) {
 
 routes.teamMembersSetProfile = function (arg) {
   return this.request('team/members/set_profile', arg, 'team', 'api', 'rpc');
+};
+/**
+ * Updates a team member's profile photo. Permission : Team member management.
+ * @function Dropbox#teamMembersSetProfilePhotoV2
+ * @arg {TeamMembersSetProfilePhotoArg} arg - The request parameters.
+ * @returns {Promise.<DropboxResponse<TeamTeamMemberInfoV2Result>, Error.<TeamMembersSetProfilePhotoError>>}
+ */
+
+
+routes.teamMembersSetProfilePhotoV2 = function (arg) {
+  return this.request('team/members/set_profile_photo_v2', arg, 'team', 'api', 'rpc');
 };
 /**
  * Updates a team member's profile photo. Permission : Team member management.
@@ -5385,7 +5589,8 @@ routes.teamPropertiesTemplateAdd = function (arg) {
   return this.request('team/properties/template/add', arg, 'team', 'api', 'rpc');
 };
 /**
- * Permission : Team member file access.
+ * Permission : Team member file access. The scope for the route is
+ * files.team_metadata.write.
  * @function Dropbox#teamPropertiesTemplateGet
  * @deprecated
  * @arg {FilePropertiesGetTemplateArg} arg - The request parameters.
@@ -5397,7 +5602,8 @@ routes.teamPropertiesTemplateGet = function (arg) {
   return this.request('team/properties/template/get', arg, 'team', 'api', 'rpc');
 };
 /**
- * Permission : Team member file access.
+ * Permission : Team member file access. The scope for the route is
+ * files.team_metadata.write.
  * @function Dropbox#teamPropertiesTemplateList
  * @deprecated
  * @returns {Promise.<DropboxResponse<FilePropertiesListTemplateResult>, Error.<FilePropertiesTemplateError>>}
@@ -5420,7 +5626,8 @@ routes.teamPropertiesTemplateUpdate = function (arg) {
   return this.request('team/properties/template/update', arg, 'team', 'api', 'rpc');
 };
 /**
- * Retrieves reporting data about a team's user activity.
+ * Retrieves reporting data about a team's user activity. Deprecated: Will be
+ * removed on July 1st 2021.
  * @function Dropbox#teamReportsGetActivity
  * @deprecated
  * @arg {TeamDateRange} arg - The request parameters.
@@ -5432,7 +5639,8 @@ routes.teamReportsGetActivity = function (arg) {
   return this.request('team/reports/get_activity', arg, 'team', 'api', 'rpc');
 };
 /**
- * Retrieves reporting data about a team's linked devices.
+ * Retrieves reporting data about a team's linked devices. Deprecated: Will be
+ * removed on July 1st 2021.
  * @function Dropbox#teamReportsGetDevices
  * @deprecated
  * @arg {TeamDateRange} arg - The request parameters.
@@ -5444,7 +5652,8 @@ routes.teamReportsGetDevices = function (arg) {
   return this.request('team/reports/get_devices', arg, 'team', 'api', 'rpc');
 };
 /**
- * Retrieves reporting data about a team's membership.
+ * Retrieves reporting data about a team's membership. Deprecated: Will be
+ * removed on July 1st 2021.
  * @function Dropbox#teamReportsGetMembership
  * @deprecated
  * @arg {TeamDateRange} arg - The request parameters.
@@ -5456,7 +5665,8 @@ routes.teamReportsGetMembership = function (arg) {
   return this.request('team/reports/get_membership', arg, 'team', 'api', 'rpc');
 };
 /**
- * Retrieves reporting data about a team's storage usage.
+ * Retrieves reporting data about a team's storage usage. Deprecated: Will be
+ * removed on July 1st 2021.
  * @function Dropbox#teamReportsGetStorage
  * @deprecated
  * @arg {TeamDateRange} arg - The request parameters.
@@ -5687,7 +5897,7 @@ exports.routes = routes;
 /***/ }),
 
 /***/ 2361:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -5697,9 +5907,9 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports.default = undefined;
 
-var _utils = __webpack_require__(59);
+var _utils = __nccwpck_require__(59);
 
-var _response = __webpack_require__(4201);
+var _response = __nccwpck_require__(4201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5709,18 +5919,26 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var fetch;
 
-if (typeof window !== 'undefined') {
+if ((0, _utils.isBrowserEnv)()) {
   fetch = window.fetch.bind(window);
 } else {
-  fetch = __webpack_require__(467); // eslint-disable-line global-require
+  fetch = __nccwpck_require__(467); // eslint-disable-line global-require
 }
 
 var crypto;
 
-if (typeof window !== 'undefined') {
+if ((0, _utils.isBrowserEnv)()) {
   crypto = window.crypto || window.msCrypto; // for IE11
 } else {
-  crypto = __webpack_require__(6417); // eslint-disable-line global-require
+  crypto = __nccwpck_require__(6417); // eslint-disable-line global-require
+}
+
+var Encoder;
+
+if (typeof TextEncoder === 'undefined') {
+  Encoder = __nccwpck_require__(1669).TextEncoder; // eslint-disable-line global-require
+} else {
+  Encoder = TextEncoder;
 } // Expiration is 300 seconds but needs to be in milliseconds for Date object
 
 
@@ -5729,8 +5947,6 @@ var PKCELength = 128;
 var TokenAccessTypes = ['legacy', 'offline', 'online'];
 var GrantTypes = ['code', 'token'];
 var IncludeGrantedScopes = ['none', 'user', 'team'];
-var BaseAuthorizeUrl = 'https://www.dropbox.com/oauth2/authorize';
-var BaseTokenUrl = 'https://api.dropboxapi.com/oauth2/token';
 /**
  * @class DropboxAuth
  * @classdesc The DropboxAuth class that provides methods to manage, acquire, and refresh tokens.
@@ -5745,6 +5961,8 @@ var BaseTokenUrl = 'https://api.dropboxapi.com/oauth2/token';
  * authentication URL.
  * @arg {String} [options.clientSecret] - The client secret for your app. Used to create
  * authentication URL and refresh access tokens.
+ * @arg {String} [options.domain] - A custom domain to use when making api requests. This
+ * should only be used for testing as scaffolding to avoid making network requests.
  */
 
 var DropboxAuth = /*#__PURE__*/function () {
@@ -5758,12 +5976,13 @@ var DropboxAuth = /*#__PURE__*/function () {
     this.refreshToken = options.refreshToken;
     this.clientId = options.clientId;
     this.clientSecret = options.clientSecret;
+    this.domain = options.domain;
   }
   /**
-   * Set the access token used to authenticate requests to the API.
-   * @arg {String} accessToken - An access token
-   * @returns {undefined}
-   */
+     * Set the access token used to authenticate requests to the API.
+     * @arg {String} accessToken - An access token
+     * @returns {undefined}
+     */
 
 
   _createClass(DropboxAuth, [{
@@ -5772,9 +5991,9 @@ var DropboxAuth = /*#__PURE__*/function () {
       this.accessToken = accessToken;
     }
     /**
-     * Get the access token
-     * @returns {String} Access token
-     */
+       * Get the access token
+       * @returns {String} Access token
+       */
 
   }, {
     key: "getAccessToken",
@@ -5782,10 +6001,10 @@ var DropboxAuth = /*#__PURE__*/function () {
       return this.accessToken;
     }
     /**
-     * Set the client id, which is used to help gain an access token.
-     * @arg {String} clientId - Your apps client id
-     * @returns {undefined}
-     */
+       * Set the client id, which is used to help gain an access token.
+       * @arg {String} clientId - Your apps client id
+       * @returns {undefined}
+       */
 
   }, {
     key: "setClientId",
@@ -5793,9 +6012,9 @@ var DropboxAuth = /*#__PURE__*/function () {
       this.clientId = clientId;
     }
     /**
-     * Get the client id
-     * @returns {String} Client id
-     */
+       * Get the client id
+       * @returns {String} Client id
+       */
 
   }, {
     key: "getClientId",
@@ -5803,10 +6022,10 @@ var DropboxAuth = /*#__PURE__*/function () {
       return this.clientId;
     }
     /**
-     * Set the client secret
-     * @arg {String} clientSecret - Your app's client secret
-     * @returns {undefined}
-     */
+       * Set the client secret
+       * @arg {String} clientSecret - Your app's client secret
+       * @returns {undefined}
+       */
 
   }, {
     key: "setClientSecret",
@@ -5814,9 +6033,9 @@ var DropboxAuth = /*#__PURE__*/function () {
       this.clientSecret = clientSecret;
     }
     /**
-     * Get the client secret
-     * @returns {String} Client secret
-     */
+       * Get the client secret
+       * @returns {String} Client secret
+       */
 
   }, {
     key: "getClientSecret",
@@ -5824,9 +6043,9 @@ var DropboxAuth = /*#__PURE__*/function () {
       return this.clientSecret;
     }
     /**
-     * Gets the refresh token
-     * @returns {String} Refresh token
-     */
+       * Gets the refresh token
+       * @returns {String} Refresh token
+       */
 
   }, {
     key: "getRefreshToken",
@@ -5834,9 +6053,9 @@ var DropboxAuth = /*#__PURE__*/function () {
       return this.refreshToken;
     }
     /**
-     * Sets the refresh token
-     * @param refreshToken - A refresh token
-     */
+       * Sets the refresh token
+       * @param refreshToken - A refresh token
+       */
 
   }, {
     key: "setRefreshToken",
@@ -5844,9 +6063,9 @@ var DropboxAuth = /*#__PURE__*/function () {
       this.refreshToken = refreshToken;
     }
     /**
-     * Gets the access token's expiration date
-     * @returns {Date} date of token expiration
-     */
+       * Gets the access token's expiration date
+       * @returns {Date} date of token expiration
+       */
 
   }, {
     key: "getAccessTokenExpiresAt",
@@ -5854,61 +6073,112 @@ var DropboxAuth = /*#__PURE__*/function () {
       return this.accessTokenExpiresAt;
     }
     /**
-     * Sets the access token's expiration date
-     * @param accessTokenExpiresAt - new expiration date
-     */
+       * Sets the access token's expiration date
+       * @param accessTokenExpiresAt - new expiration date
+       */
 
   }, {
     key: "setAccessTokenExpiresAt",
     value: function setAccessTokenExpiresAt(accessTokenExpiresAt) {
       this.accessTokenExpiresAt = accessTokenExpiresAt;
     }
+    /**
+       * Sets the code verifier for PKCE flow
+       * @param {String} codeVerifier - new code verifier
+       */
+
+  }, {
+    key: "setCodeVerifier",
+    value: function setCodeVerifier(codeVerifier) {
+      this.codeVerifier = codeVerifier;
+    }
+    /**
+       * Gets the code verifier for PKCE flow
+       * @returns {String} - code verifier for PKCE
+       */
+
+  }, {
+    key: "getCodeVerifier",
+    value: function getCodeVerifier() {
+      return this.codeVerifier;
+    }
+  }, {
+    key: "generateCodeChallenge",
+    value: function generateCodeChallenge() {
+      var _this = this;
+
+      var encoder = new Encoder();
+      var codeData = encoder.encode(this.codeVerifier);
+      var codeChallenge;
+
+      if ((0, _utils.isBrowserEnv)()) {
+        return crypto.subtle.digest('SHA-256', codeData).then(function (digestedHash) {
+          var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(digestedHash)));
+          codeChallenge = (0, _utils.createBrowserSafeString)(base64String).substr(0, 128);
+          _this.codeChallenge = codeChallenge;
+        });
+      }
+
+      var digestedHash = crypto.createHash('sha256').update(codeData).digest();
+      codeChallenge = (0, _utils.createBrowserSafeString)(digestedHash);
+      this.codeChallenge = codeChallenge;
+      return Promise.resolve();
+    }
   }, {
     key: "generatePKCECodes",
     value: function generatePKCECodes() {
-      var codeVerifier = crypto.randomBytes(PKCELength);
-      codeVerifier = codeVerifier.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '').substr(0, 128);
+      var codeVerifier;
+
+      if ((0, _utils.isBrowserEnv)()) {
+        var array = new Uint8Array(PKCELength);
+        var randomValueArray = crypto.getRandomValues(array);
+        var base64String = btoa(randomValueArray);
+        codeVerifier = (0, _utils.createBrowserSafeString)(base64String).substr(0, 128);
+      } else {
+        var randomBytes = crypto.randomBytes(PKCELength);
+        codeVerifier = (0, _utils.createBrowserSafeString)(randomBytes).substr(0, 128);
+      }
+
       this.codeVerifier = codeVerifier;
-      var encoder = new TextEncoder();
-      var codeData = encoder.encode(codeVerifier);
-      var codeChallenge = crypto.createHash('sha256').update(codeData).digest();
-      codeChallenge = codeChallenge.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-      this.codeChallenge = codeChallenge;
+      return this.generateCodeChallenge();
     }
     /**
-     * Get a URL that can be used to authenticate users for the Dropbox API.
-     * @arg {String} redirectUri - A URL to redirect the user to after
-     * authenticating. This must be added to your app through the admin interface.
-     * @arg {String} [state] - State that will be returned in the redirect URL to help
-     * prevent cross site scripting attacks.
-     * @arg {String} [authType] - auth type, defaults to 'token', other option is 'code'
-     * @arg {String} [tokenAccessType] - type of token to request.  From the following:
-     * null - creates a token with the app default (either legacy or online)
-     * legacy - creates one long-lived token with no expiration
-     * online - create one short-lived token with an expiration
-     * offline - create one short-lived token with an expiration with a refresh token
-     * @arg {Array<String>} [scope] - scopes to request for the grant
-     * @arg {String} [includeGrantedScopes] - whether or not to include previously granted scopes.
-     * From the following:
-     * user - include user scopes in the grant
-     * team - include team scopes in the grant
-     * Note: if this user has never linked the app, include_granted_scopes must be None
-     * @arg {boolean} [usePKCE] - Whether or not to use Sha256 based PKCE. PKCE should be only use on
-     * client apps which doesn't call your server. It is less secure than non-PKCE flow but
-     * can be used if you are unable to safely retrieve your app secret
-     * @returns {String} Url to send user to for Dropbox API authentication
-     */
+       * Get a URL that can be used to authenticate users for the Dropbox API.
+       * @arg {String} redirectUri - A URL to redirect the user to after
+       * authenticating. This must be added to your app through the admin interface.
+       * @arg {String} [state] - State that will be returned in the redirect URL to help
+       * prevent cross site scripting attacks.
+       * @arg {String} [authType] - auth type, defaults to 'token', other option is 'code'
+       * @arg {String} [tokenAccessType] - type of token to request.  From the following:
+       * null - creates a token with the app default (either legacy or online)
+       * legacy - creates one long-lived token with no expiration
+       * online - create one short-lived token with an expiration
+       * offline - create one short-lived token with an expiration with a refresh token
+       * @arg {Array<String>} [scope] - scopes to request for the grant
+       * @arg {String} [includeGrantedScopes] - whether or not to include previously granted scopes.
+       * From the following:
+       * user - include user scopes in the grant
+       * team - include team scopes in the grant
+       * Note: if this user has never linked the app, include_granted_scopes must be None
+       * @arg {boolean} [usePKCE] - Whether or not to use Sha256 based PKCE. PKCE should be only use
+       * on client apps which doesn't call your server. It is less secure than non-PKCE flow but
+       * can be used if you are unable to safely retrieve your app secret
+       * @returns {Promise<String>} - Url to send user to for Dropbox API authentication
+       * returned in a promise
+       */
 
   }, {
     key: "getAuthenticationUrl",
     value: function getAuthenticationUrl(redirectUri, state) {
+      var _this2 = this;
+
       var authType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'token';
       var tokenAccessType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
       var scope = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
       var includeGrantedScopes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 'none';
       var usePKCE = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : false;
       var clientId = this.getClientId();
-      var baseUrl = BaseAuthorizeUrl;
+      var baseUrl = (0, _utils.OAuth2AuthorizationUrl)(this.domain);
 
       if (!clientId) {
         throw new Error('A client id is required. You can set the client id using .setClientId().');
@@ -5963,19 +6233,22 @@ var DropboxAuth = /*#__PURE__*/function () {
       }
 
       if (usePKCE) {
-        this.generatePKCECodes();
-        authUrl += '&code_challenge_method=S256';
-        authUrl += "&code_challenge=".concat(this.codeChallenge);
+        return this.generatePKCECodes().then(function () {
+          authUrl += '&code_challenge_method=S256';
+          authUrl += "&code_challenge=".concat(_this2.codeChallenge);
+          return authUrl;
+        });
       }
 
-      return authUrl;
+      return Promise.resolve(authUrl);
     }
     /**
-     * Get an OAuth2 access token from an OAuth2 Code.
-     * @arg {String} redirectUri - A URL to redirect the user to after
-     * authenticating. This must be added to your app through the admin interface.
-     * @arg {String} code - An OAuth2 code.
-    */
+       * Get an OAuth2 access token from an OAuth2 Code.
+       * @arg {String} redirectUri - A URL to redirect the user to after
+       * authenticating. This must be added to your app through the admin interface.
+       * @arg {String} code - An OAuth2 code.
+       * @returns {Object} An object containing the token and related info (if applicable)
+       */
 
   }, {
     key: "getAccessTokenFromCode",
@@ -5987,7 +6260,7 @@ var DropboxAuth = /*#__PURE__*/function () {
         throw new Error('A client id is required. You can set the client id using .setClientId().');
       }
 
-      var path = BaseTokenUrl;
+      var path = (0, _utils.OAuth2TokenUrl)(this.domain);
       path += '?grant_type=authorization_code';
       path += "&code=".concat(code);
       path += "&client_id=".concat(clientId);
@@ -5995,7 +6268,7 @@ var DropboxAuth = /*#__PURE__*/function () {
       if (clientSecret) {
         path += "&client_secret=".concat(clientSecret);
       } else {
-        if (!this.codeChallenge) {
+        if (!this.codeVerifier) {
           throw new Error('You must use PKCE when generating the authorization URL to not include a client secret');
         }
 
@@ -6017,16 +6290,16 @@ var DropboxAuth = /*#__PURE__*/function () {
       });
     }
     /**
-     * Checks if a token is needed, can be refreshed and if the token is expired.
-     * If so, attempts to refresh access token
-     * @returns {Promise<*>}
-     */
+       * Checks if a token is needed, can be refreshed and if the token is expired.
+       * If so, attempts to refresh access token
+       * @returns {Promise<*>}
+       */
 
   }, {
     key: "checkAndRefreshAccessToken",
     value: function checkAndRefreshAccessToken() {
       var canRefresh = this.getRefreshToken() && this.getClientId();
-      var needsRefresh = this.getAccessTokenExpiresAt() && new Date(Date.now() + TokenExpirationBuffer) >= this.getAccessTokenExpiresAt();
+      var needsRefresh = !this.getAccessTokenExpiresAt() || new Date(Date.now() + TokenExpirationBuffer) >= this.getAccessTokenExpiresAt();
       var needsToken = !this.getAccessToken();
 
       if ((needsRefresh || needsToken) && canRefresh) {
@@ -6036,19 +6309,19 @@ var DropboxAuth = /*#__PURE__*/function () {
       return Promise.resolve();
     }
     /**
-     * Refreshes the access token using the refresh token, if available
-     * @arg {Array<String>} scope - a subset of scopes from the original
-     * refresh to acquire with an access token
-     * @returns {Promise<*>}
-     */
+       * Refreshes the access token using the refresh token, if available
+       * @arg {Array<String>} scope - a subset of scopes from the original
+       * refresh to acquire with an access token
+       * @returns {Promise<*>}
+       */
 
   }, {
     key: "refreshAccessToken",
     value: function refreshAccessToken() {
-      var _this = this;
+      var _this3 = this;
 
       var scope = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      var refreshUrl = BaseTokenUrl;
+      var refreshUrl = (0, _utils.OAuth2TokenUrl)(this.domain);
       var clientId = this.getClientId();
       var clientSecret = this.getClientSecret();
 
@@ -6080,77 +6353,78 @@ var DropboxAuth = /*#__PURE__*/function () {
       return this.fetch(refreshUrl, fetchOptions).then(function (res) {
         return (0, _response.parseResponse)(res);
       }).then(function (res) {
-        _this.setAccessToken(res.result.access_token);
+        _this3.setAccessToken(res.result.access_token);
 
-        _this.setAccessTokenExpiresAt((0, _utils.getTokenExpiresAtDate)(res.result.expires_in));
+        _this3.setAccessTokenExpiresAt((0, _utils.getTokenExpiresAtDate)(res.result.expires_in));
       });
     }
     /**
-     * An authentication process that works with cordova applications.
-     * @param {successCallback} successCallback
-     * @param {errorCallback} errorCallback
-     */
+       * An authentication process that works with cordova applications.
+       * @param {successCallback} successCallback
+       * @param {errorCallback} errorCallback
+       */
 
   }, {
     key: "authenticateWithCordova",
     value: function authenticateWithCordova(successCallback, errorCallback) {
       var redirectUrl = 'https://www.dropbox.com/1/oauth2/redirect_receiver';
-      var url = this.getAuthenticationUrl(redirectUrl);
-      var removed = false;
-      var browser = window.open(url, '_blank');
+      this.getAuthenticationUrl(redirectUrl).then(function (url) {
+        var removed = false;
+        var browser = window.open(url, '_blank');
 
-      function onLoadError(event) {
-        if (event.code !== -999) {
+        function onLoadError(event) {
           // Workaround to fix wrong behavior on cordova-plugin-inappbrowser
-          // Try to avoid a browser crash on browser.close().
-          window.setTimeout(function () {
-            browser.close();
-          }, 10);
-          errorCallback();
-        }
-      }
-
-      function onLoadStop(event) {
-        var errorLabel = '&error=';
-        var errorIndex = event.url.indexOf(errorLabel);
-
-        if (errorIndex > -1) {
-          // Try to avoid a browser crash on browser.close().
-          window.setTimeout(function () {
-            browser.close();
-          }, 10);
-          errorCallback();
-        } else {
-          var tokenLabel = '#access_token=';
-          var tokenIndex = event.url.indexOf(tokenLabel);
-          var tokenTypeIndex = event.url.indexOf('&token_type=');
-
-          if (tokenIndex > -1) {
-            tokenIndex += tokenLabel.length; // Try to avoid a browser crash on browser.close().
-
+          if (event.code !== -999) {
+            // Try to avoid a browser crash on browser.close().
             window.setTimeout(function () {
               browser.close();
             }, 10);
-            var accessToken = event.url.substring(tokenIndex, tokenTypeIndex);
-            successCallback(accessToken);
+            errorCallback();
           }
         }
-      }
 
-      function onExit() {
-        if (removed) {
-          return;
+        function onLoadStop(event) {
+          var errorLabel = '&error=';
+          var errorIndex = event.url.indexOf(errorLabel);
+
+          if (errorIndex > -1) {
+            // Try to avoid a browser crash on browser.close().
+            window.setTimeout(function () {
+              browser.close();
+            }, 10);
+            errorCallback();
+          } else {
+            var tokenLabel = '#access_token=';
+            var tokenIndex = event.url.indexOf(tokenLabel);
+            var tokenTypeIndex = event.url.indexOf('&token_type=');
+
+            if (tokenIndex > -1) {
+              tokenIndex += tokenLabel.length; // Try to avoid a browser crash on browser.close().
+
+              window.setTimeout(function () {
+                browser.close();
+              }, 10);
+              var accessToken = event.url.substring(tokenIndex, tokenTypeIndex);
+              successCallback(accessToken);
+            }
+          }
         }
 
-        browser.removeEventListener('loaderror', onLoadError);
-        browser.removeEventListener('loadstop', onLoadStop);
-        browser.removeEventListener('exit', onExit);
-        removed = true;
-      }
+        function onExit() {
+          if (removed) {
+            return;
+          }
 
-      browser.addEventListener('loaderror', onLoadError);
-      browser.addEventListener('loadstop', onLoadStop);
-      browser.addEventListener('exit', onExit);
+          browser.removeEventListener('loaderror', onLoadError);
+          browser.removeEventListener('loadstop', onLoadStop);
+          browser.removeEventListener('exit', onExit);
+          removed = true;
+        }
+
+        browser.addEventListener('loaderror', onLoadError);
+        browser.addEventListener('loadstop', onLoadStop);
+        browser.addEventListener('exit', onExit);
+      });
     }
   }]);
 
@@ -6177,11 +6451,13 @@ var APP_AUTH = exports.APP_AUTH = 'app';
 var USER_AUTH = exports.USER_AUTH = 'user';
 var TEAM_AUTH = exports.TEAM_AUTH = 'team';
 var NO_AUTH = exports.NO_AUTH = 'noauth';
+var DEFAULT_API_DOMAIN = exports.DEFAULT_API_DOMAIN = 'dropboxapi.com';
+var DEFAULT_DOMAIN = exports.DEFAULT_DOMAIN = 'dropbox.com';
 
 /***/ }),
 
 /***/ 6258:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -6191,15 +6467,15 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports.default = undefined;
 
-var _constants = __webpack_require__(9478);
+var _constants = __nccwpck_require__(9478);
 
-var _routes = __webpack_require__(9526);
+var _routes = __nccwpck_require__(9526);
 
-var _auth = __webpack_require__(2361);
+var _auth = __nccwpck_require__(2361);
 
-var _utils = __webpack_require__(59);
+var _utils = __nccwpck_require__(59);
 
-var _response = __webpack_require__(4201);
+var _response = __nccwpck_require__(4201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6212,7 +6488,7 @@ var fetch;
 if (typeof window !== 'undefined') {
   fetch = window.fetch.bind(window);
 } else {
-  fetch = __webpack_require__(467); // eslint-disable-line global-require
+  fetch = __nccwpck_require__(467); // eslint-disable-line global-require
 }
 
 var b64 = typeof btoa === 'undefined' ? function (str) {
@@ -6234,13 +6510,15 @@ var b64 = typeof btoa === 'undefined' ? function (str) {
  * If this is set, the remaining parameters will be ignored.
  * @arg {String} [options.accessToken] - An access token for making authenticated
  * requests.
- * @arg {Date} [options.AccessTokenExpiresAt] - Date of the current access token's
+ * @arg {Date} [options.accessTokenExpiresAt] - Date of the current access token's
  * expiration (if available)
  * @arg {String} [options.refreshToken] - A refresh token for retrieving access tokens
  * @arg {String} [options.clientId] - The client id for your app. Used to create
  * authentication URL.
  * @arg {String} [options.clientSecret] - The client secret for your app. Used to create
  * authentication URL and refresh access tokens.
+ * @arg {String} [options.domain] - A custom domain to use when making api requests. This
+ * should only be used for testing as scaffolding to avoid making network requests.
  */
 
 var Dropbox = /*#__PURE__*/function () {
@@ -6259,12 +6537,26 @@ var Dropbox = /*#__PURE__*/function () {
     this.selectUser = options.selectUser;
     this.selectAdmin = options.selectAdmin;
     this.pathRoot = options.pathRoot;
+    this.domain = options.domain;
     Object.assign(this, _routes.routes);
   }
 
   _createClass(Dropbox, [{
     key: "request",
     value: function request(path, args, auth, host, style) {
+      // checks for multiauth and assigns auth based on priority to create header in switch case
+      if (auth.split(',').length > 1) {
+        var authTypes = auth.replace(' ', '').split(',');
+
+        if (authTypes.includes(_constants.USER_AUTH) && this.auth.getAccessToken()) {
+          auth = _constants.USER_AUTH;
+        } else if (authTypes.includes(_constants.TEAM_AUTH) && this.auth.getAccessToken()) {
+          auth = _constants.TEAM_AUTH;
+        } else if (authTypes.includes(_constants.APP_AUTH)) {
+          auth = _constants.APP_AUTH;
+        }
+      }
+
       switch (style) {
         case _constants.RPC:
           return this.rpcRequest(path, args, auth, host);
@@ -6323,7 +6615,7 @@ var Dropbox = /*#__PURE__*/function () {
 
         return fetchOptions;
       }).then(function (fetchOptions) {
-        return _this.fetch((0, _utils.getBaseURL)(host) + path, fetchOptions);
+        return _this.fetch((0, _utils.baseApiUrl)(host, _this.domain) + path, fetchOptions);
       }).then(function (res) {
         return (0, _response.parseResponse)(res);
       });
@@ -6350,7 +6642,7 @@ var Dropbox = /*#__PURE__*/function () {
 
         return fetchOptions;
       }).then(function (fetchOptions) {
-        return fetch((0, _utils.getBaseURL)(host) + path, fetchOptions);
+        return _this2.fetch((0, _utils.baseApiUrl)(host, _this2.domain) + path, fetchOptions);
       }).then(function (res) {
         return (0, _response.parseDownloadResponse)(res);
       });
@@ -6381,7 +6673,7 @@ var Dropbox = /*#__PURE__*/function () {
 
         return fetchOptions;
       }).then(function (fetchOptions) {
-        return _this3.fetch((0, _utils.getBaseURL)(host) + path, fetchOptions);
+        return _this3.fetch((0, _utils.baseApiUrl)(host, _this3.domain) + path, fetchOptions);
       }).then(function (res) {
         return (0, _response.parseResponse)(res);
       });
@@ -6416,11 +6708,11 @@ exports.default = Dropbox;
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6446,6 +6738,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 /**
  * The response class of HTTP errors from API calls using the Dropbox SDK.
+ * @class DropboxResponseError
+ * @classdesc The response class of HTTP errors from API calls using the Dropbox SDK.
+ * @arg {number} status - HTTP Status code of the call
+ * @arg {Object} headers - Headers returned from the call
+ * @arg {Object} error - Serialized Error of the call
  */
 var DropboxResponseError = /*#__PURE__*/exports.DropboxResponseError = function (_Error) {
   _inherits(DropboxResponseError, _Error);
@@ -6471,7 +6768,7 @@ var DropboxResponseError = /*#__PURE__*/exports.DropboxResponseError = function 
 /***/ }),
 
 /***/ 4201:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -6483,9 +6780,9 @@ exports.DropboxResponse = undefined;
 exports.parseResponse = parseResponse;
 exports.parseDownloadResponse = parseDownloadResponse;
 
-var _utils = __webpack_require__(59);
+var _utils = __nccwpck_require__(59);
 
-var _error = __webpack_require__(178);
+var _error = __nccwpck_require__(178);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6560,7 +6857,7 @@ function parseDownloadResponse(res) {
 /***/ }),
 
 /***/ 59:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -6568,19 +6865,34 @@ function parseDownloadResponse(res) {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.getBaseURL = getBaseURL;
+exports.OAuth2TokenUrl = exports.OAuth2AuthorizationUrl = exports.baseApiUrl = undefined;
 exports.httpHeaderSafeJson = httpHeaderSafeJson;
 exports.getTokenExpiresAtDate = getTokenExpiresAtDate;
 exports.isWindowOrWorker = isWindowOrWorker;
+exports.isBrowserEnv = isBrowserEnv;
+exports.createBrowserSafeString = createBrowserSafeString;
+
+var _constants = __nccwpck_require__(9478);
 
 function getSafeUnicode(c) {
   var unicode = "000".concat(c.charCodeAt(0).toString(16)).slice(-4);
   return "\\u".concat(unicode);
 }
 
-function getBaseURL(host) {
-  return "https://".concat(host, ".dropboxapi.com/2/");
-} // source https://www.dropboxforum.com/t5/API-support/HTTP-header-quot-Dropbox-API-Arg-quot-could-not-decode-input-as/m-p/173823/highlight/true#M6786
+var baseApiUrl = exports.baseApiUrl = function baseApiUrl(subdomain) {
+  var domain = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _constants.DEFAULT_API_DOMAIN;
+  return "https://".concat(subdomain, ".").concat(domain, "/2/");
+};
+
+var OAuth2AuthorizationUrl = exports.OAuth2AuthorizationUrl = function OAuth2AuthorizationUrl() {
+  var domain = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.DEFAULT_DOMAIN;
+  return "https://".concat(domain, "/oauth2/authorize");
+};
+
+var OAuth2TokenUrl = exports.OAuth2TokenUrl = function OAuth2TokenUrl() {
+  var domain = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.DEFAULT_API_DOMAIN;
+  return "https://api.".concat(domain, "/oauth2/token");
+}; // source https://www.dropboxforum.com/t5/API-support/HTTP-header-quot-Dropbox-API-Arg-quot-could-not-decode-input-as/m-p/173823/highlight/true#M6786
 
 
 function httpHeaderSafeJson(args) {
@@ -6598,19 +6910,28 @@ function isWindowOrWorker() {
   || "object" === 'undefined' || typeof window !== 'undefined';
 }
 
+function isBrowserEnv() {
+  return typeof window !== 'undefined';
+}
+
+function createBrowserSafeString(toBeConverted) {
+  var convertedString = toBeConverted.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  return convertedString;
+}
+
 /***/ }),
 
 /***/ 3664:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
-const taskManager = __webpack_require__(2708);
-const async_1 = __webpack_require__(5679);
-const stream_1 = __webpack_require__(4630);
-const sync_1 = __webpack_require__(2405);
-const settings_1 = __webpack_require__(952);
-const utils = __webpack_require__(5444);
+const taskManager = __nccwpck_require__(2708);
+const async_1 = __nccwpck_require__(5679);
+const stream_1 = __nccwpck_require__(4630);
+const sync_1 = __nccwpck_require__(2405);
+const settings_1 = __nccwpck_require__(952);
+const utils = __nccwpck_require__(5444);
 async function FastGlob(source, options) {
     assertPatternsInput(source);
     const works = getWorks(source, async_1.default, options);
@@ -6676,13 +6997,13 @@ module.exports = FastGlob;
 /***/ }),
 
 /***/ 2708:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.convertPatternGroupToTask = exports.convertPatternGroupsToTasks = exports.groupPatternsByBaseDirectory = exports.getNegativePatternsAsPositive = exports.getPositivePatterns = exports.convertPatternsToTasks = exports.generate = void 0;
-const utils = __webpack_require__(5444);
+const utils = __nccwpck_require__(5444);
 function generate(patterns, settings) {
     const positivePatterns = getPositivePatterns(patterns);
     const negativePatterns = getNegativePatternsAsPositive(patterns, settings.ignore);
@@ -6749,13 +7070,13 @@ exports.convertPatternGroupToTask = convertPatternGroupToTask;
 /***/ }),
 
 /***/ 5679:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const stream_1 = __webpack_require__(2083);
-const provider_1 = __webpack_require__(257);
+const stream_1 = __nccwpck_require__(2083);
+const provider_1 = __nccwpck_require__(257);
 class ProviderAsync extends provider_1.default {
     constructor() {
         super(...arguments);
@@ -6785,13 +7106,13 @@ exports.default = ProviderAsync;
 /***/ }),
 
 /***/ 6983:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const utils = __webpack_require__(5444);
-const partial_1 = __webpack_require__(5295);
+const utils = __nccwpck_require__(5444);
+const partial_1 = __nccwpck_require__(5295);
 class DeepFilter {
     constructor(_settings, _micromatchOptions) {
         this._settings = _settings;
@@ -6855,12 +7176,12 @@ exports.default = DeepFilter;
 /***/ }),
 
 /***/ 1343:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const utils = __webpack_require__(5444);
+const utils = __nccwpck_require__(5444);
 class EntryFilter {
     constructor(_settings, _micromatchOptions) {
         this._settings = _settings;
@@ -6919,12 +7240,12 @@ exports.default = EntryFilter;
 /***/ }),
 
 /***/ 6654:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const utils = __webpack_require__(5444);
+const utils = __nccwpck_require__(5444);
 class ErrorFilter {
     constructor(_settings) {
         this._settings = _settings;
@@ -6942,12 +7263,12 @@ exports.default = ErrorFilter;
 /***/ }),
 
 /***/ 2576:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const utils = __webpack_require__(5444);
+const utils = __nccwpck_require__(5444);
 class Matcher {
     constructor(_patterns, _settings, _micromatchOptions) {
         this._patterns = _patterns;
@@ -7000,12 +7321,12 @@ exports.default = Matcher;
 /***/ }),
 
 /***/ 5295:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const matcher_1 = __webpack_require__(2576);
+const matcher_1 = __nccwpck_require__(2576);
 class PartialMatcher extends matcher_1.default {
     match(filepath) {
         const parts = filepath.split('/');
@@ -7046,16 +7367,16 @@ exports.default = PartialMatcher;
 /***/ }),
 
 /***/ 257:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const path = __webpack_require__(5622);
-const deep_1 = __webpack_require__(6983);
-const entry_1 = __webpack_require__(1343);
-const error_1 = __webpack_require__(6654);
-const entry_2 = __webpack_require__(4029);
+const path = __nccwpck_require__(5622);
+const deep_1 = __nccwpck_require__(6983);
+const entry_1 = __nccwpck_require__(1343);
+const error_1 = __nccwpck_require__(6654);
+const entry_2 = __nccwpck_require__(4029);
 class Provider {
     constructor(_settings) {
         this._settings = _settings;
@@ -7102,14 +7423,14 @@ exports.default = Provider;
 /***/ }),
 
 /***/ 4630:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const stream_1 = __webpack_require__(2413);
-const stream_2 = __webpack_require__(2083);
-const provider_1 = __webpack_require__(257);
+const stream_1 = __nccwpck_require__(2413);
+const stream_2 = __nccwpck_require__(2083);
+const provider_1 = __nccwpck_require__(257);
 class ProviderStream extends provider_1.default {
     constructor() {
         super(...arguments);
@@ -7141,13 +7462,13 @@ exports.default = ProviderStream;
 /***/ }),
 
 /***/ 2405:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const sync_1 = __webpack_require__(6234);
-const provider_1 = __webpack_require__(257);
+const sync_1 = __nccwpck_require__(6234);
+const provider_1 = __nccwpck_require__(257);
 class ProviderSync extends provider_1.default {
     constructor() {
         super(...arguments);
@@ -7172,12 +7493,12 @@ exports.default = ProviderSync;
 /***/ }),
 
 /***/ 4029:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const utils = __webpack_require__(5444);
+const utils = __nccwpck_require__(5444);
 class EntryTransformer {
     constructor(_settings) {
         this._settings = _settings;
@@ -7206,14 +7527,14 @@ exports.default = EntryTransformer;
 /***/ }),
 
 /***/ 5582:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const path = __webpack_require__(5622);
-const fsStat = __webpack_require__(109);
-const utils = __webpack_require__(5444);
+const path = __nccwpck_require__(5622);
+const fsStat = __nccwpck_require__(109);
+const utils = __nccwpck_require__(5444);
 class Reader {
     constructor(_settings) {
         this._settings = _settings;
@@ -7247,15 +7568,15 @@ exports.default = Reader;
 /***/ }),
 
 /***/ 2083:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const stream_1 = __webpack_require__(2413);
-const fsStat = __webpack_require__(109);
-const fsWalk = __webpack_require__(6026);
-const reader_1 = __webpack_require__(5582);
+const stream_1 = __nccwpck_require__(2413);
+const fsStat = __nccwpck_require__(109);
+const fsWalk = __nccwpck_require__(6026);
+const reader_1 = __nccwpck_require__(5582);
 class ReaderStream extends reader_1.default {
     constructor() {
         super(...arguments);
@@ -7310,14 +7631,14 @@ exports.default = ReaderStream;
 /***/ }),
 
 /***/ 6234:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fsStat = __webpack_require__(109);
-const fsWalk = __webpack_require__(6026);
-const reader_1 = __webpack_require__(5582);
+const fsStat = __nccwpck_require__(109);
+const fsWalk = __nccwpck_require__(6026);
+const reader_1 = __nccwpck_require__(5582);
 class ReaderSync extends reader_1.default {
     constructor() {
         super(...arguments);
@@ -7361,15 +7682,19 @@ exports.default = ReaderSync;
 /***/ }),
 
 /***/ 952:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DEFAULT_FILE_SYSTEM_ADAPTER = void 0;
-const fs = __webpack_require__(5747);
-const os = __webpack_require__(2087);
-const CPU_COUNT = os.cpus().length;
+const fs = __nccwpck_require__(5747);
+const os = __nccwpck_require__(2087);
+/**
+ * The `os.cpus` method can return zero. We expect the number of cores to be greater than zero.
+ * https://github.com/nodejs/node/blob/7faeddf23a98c53896f8b574a6e66589e8fb1eb8/lib/os.js#L106-L107
+ */
+const CPU_COUNT = Math.max(os.cpus().length, 1);
 exports.DEFAULT_FILE_SYSTEM_ADAPTER = {
     lstat: fs.lstat,
     lstatSync: fs.lstatSync,
@@ -7494,38 +7819,38 @@ exports.createDirentFromStats = createDirentFromStats;
 /***/ }),
 
 /***/ 5444:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.string = exports.stream = exports.pattern = exports.path = exports.fs = exports.errno = exports.array = void 0;
-const array = __webpack_require__(5325);
+const array = __nccwpck_require__(5325);
 exports.array = array;
-const errno = __webpack_require__(1230);
+const errno = __nccwpck_require__(1230);
 exports.errno = errno;
-const fs = __webpack_require__(7543);
+const fs = __nccwpck_require__(7543);
 exports.fs = fs;
-const path = __webpack_require__(3873);
+const path = __nccwpck_require__(3873);
 exports.path = path;
-const pattern = __webpack_require__(1221);
+const pattern = __nccwpck_require__(1221);
 exports.pattern = pattern;
-const stream = __webpack_require__(8382);
+const stream = __nccwpck_require__(8382);
 exports.stream = stream;
-const string = __webpack_require__(2203);
+const string = __nccwpck_require__(2203);
 exports.string = string;
 
 
 /***/ }),
 
 /***/ 3873:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.removeLeadingDotSegment = exports.escape = exports.makeAbsolute = exports.unixify = void 0;
-const path = __webpack_require__(5622);
+const path = __nccwpck_require__(5622);
 const LEADING_DOT_SEGMENT_CHARACTERS_COUNT = 2; // ./ or .\\
 const UNESCAPED_GLOB_SYMBOLS_RE = /(\\?)([()*?[\]{|}]|^!|[!+@](?=\())/g;
 /**
@@ -7560,16 +7885,16 @@ exports.removeLeadingDotSegment = removeLeadingDotSegment;
 /***/ }),
 
 /***/ 1221:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.matchAny = exports.convertPatternsToRe = exports.makeRe = exports.getPatternParts = exports.expandBraceExpansion = exports.expandPatternsWithBraceExpansion = exports.isAffectDepthOfReadingPattern = exports.endsWithSlashGlobStar = exports.hasGlobStar = exports.getBaseDirectory = exports.getPositivePatterns = exports.getNegativePatterns = exports.isPositivePattern = exports.isNegativePattern = exports.convertToNegativePattern = exports.convertToPositivePattern = exports.isDynamicPattern = exports.isStaticPattern = void 0;
-const path = __webpack_require__(5622);
-const globParent = __webpack_require__(4655);
-const micromatch = __webpack_require__(6228);
-const picomatch = __webpack_require__(8569);
+const path = __nccwpck_require__(5622);
+const globParent = __nccwpck_require__(4655);
+const micromatch = __nccwpck_require__(6228);
+const picomatch = __nccwpck_require__(8569);
 const GLOBSTAR = '**';
 const ESCAPE_SYMBOL = '\\';
 const COMMON_GLOB_SYMBOLS_RE = /[*?]|^!/;
@@ -7700,13 +8025,13 @@ exports.matchAny = matchAny;
 /***/ }),
 
 /***/ 8382:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.merge = void 0;
-const merge2 = __webpack_require__(2578);
+const merge2 = __nccwpck_require__(2578);
 function merge(streams) {
     const mergedStream = merge2(streams);
     streams.forEach((stream) => {
@@ -7744,18 +8069,22 @@ exports.isEmpty = isEmpty;
 /***/ }),
 
 /***/ 7340:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-var reusify = __webpack_require__(2113)
+var reusify = __nccwpck_require__(2113)
 
 function fastqueue (context, worker, concurrency) {
   if (typeof context === 'function') {
     concurrency = worker
     worker = context
     context = null
+  }
+
+  if (concurrency < 1) {
+    throw new Error('fastqueue concurrency must be greater than 1')
   }
 
   var cache = reusify(Task)
@@ -7945,13 +8274,63 @@ function Task () {
   }
 }
 
+function queueAsPromised (context, worker, concurrency) {
+  if (typeof context === 'function') {
+    concurrency = worker
+    worker = context
+    context = null
+  }
+
+  function asyncWrapper (arg, cb) {
+    worker.call(this, arg)
+      .then(function (res) {
+        cb(null, res)
+      }, cb)
+  }
+
+  var queue = fastqueue(context, asyncWrapper, concurrency)
+
+  var pushCb = queue.push
+  var unshiftCb = queue.unshift
+
+  queue.push = push
+  queue.unshift = unshift
+
+  return queue
+
+  function push (value) {
+    return new Promise(function (resolve, reject) {
+      pushCb(value, function (err, result) {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(result)
+      })
+    })
+  }
+
+  function unshift (value) {
+    return new Promise(function (resolve, reject) {
+      unshiftCb(value, function (err, result) {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(result)
+      })
+    })
+  }
+}
+
 module.exports = fastqueue
+module.exports.promise = queueAsPromised
 
 
 /***/ }),
 
 /***/ 6330:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 /*!
@@ -7963,8 +8342,8 @@ module.exports = fastqueue
 
 
 
-const util = __webpack_require__(1669);
-const toRegexRange = __webpack_require__(1861);
+const util = __nccwpck_require__(1669);
+const toRegexRange = __nccwpck_require__(1861);
 
 const isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
 
@@ -8208,18 +8587,18 @@ module.exports = fill;
 /***/ }),
 
 /***/ 4655:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-var isGlob = __webpack_require__(4466);
-var pathPosixDirname = __webpack_require__(5622).posix.dirname;
-var isWin32 = __webpack_require__(2087).platform() === 'win32';
+var isGlob = __nccwpck_require__(4466);
+var pathPosixDirname = __nccwpck_require__(5622).posix.dirname;
+var isWin32 = __nccwpck_require__(2087).platform() === 'win32';
 
 var slash = '/';
 var backslash = /\\/g;
-var enclosure = /[\{\[].*[\/]*.*[\}\]]$/;
+var enclosure = /[\{\[].*[\}\]]$/;
 var globby = /(^|[^\\])([\{\[]|\([^\)]+$)/;
 var escaped = /\\([\!\*\?\|\[\]\(\)\{\}])/g;
 
@@ -8227,6 +8606,7 @@ var escaped = /\\([\!\*\?\|\[\]\(\)\{\}])/g;
  * @param {string} str
  * @param {Object} opts
  * @param {boolean} [opts.flipBackslashes=true]
+ * @returns {string}
  */
 module.exports = function globParent(str, opts) {
   var options = Object.assign({ flipBackslashes: true }, opts);
@@ -8257,16 +8637,16 @@ module.exports = function globParent(str, opts) {
 /***/ }),
 
 /***/ 9038:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
-const {promisify} = __webpack_require__(1669);
-const fs = __webpack_require__(5747);
-const path = __webpack_require__(5622);
-const fastGlob = __webpack_require__(3664);
-const gitIgnore = __webpack_require__(4777);
-const slash = __webpack_require__(4111);
+const {promisify} = __nccwpck_require__(1669);
+const fs = __nccwpck_require__(5747);
+const path = __nccwpck_require__(5622);
+const fastGlob = __nccwpck_require__(3664);
+const gitIgnore = __nccwpck_require__(4777);
+const slash = __nccwpck_require__(4111);
 
 const DEFAULT_IGNORE = [
 	'**/node_modules/**',
@@ -8296,19 +8676,21 @@ const parseGitIgnore = (content, options) => {
 };
 
 const reduceIgnore = files => {
-	return files.reduce((ignores, file) => {
+	const ignores = gitIgnore();
+	for (const file of files) {
 		ignores.add(parseGitIgnore(file.content, {
 			cwd: file.cwd,
 			fileName: file.filePath
 		}));
-		return ignores;
-	}, gitIgnore());
+	}
+
+	return ignores;
 };
 
 const ensureAbsolutePathForCwd = (cwd, p) => {
 	cwd = slash(cwd);
 	if (path.isAbsolute(p)) {
-		if (p.startsWith(cwd)) {
+		if (slash(p).startsWith(cwd)) {
 			return p;
 		}
 
@@ -8319,7 +8701,7 @@ const ensureAbsolutePathForCwd = (cwd, p) => {
 };
 
 const getIsIgnoredPredecate = (ignores, cwd) => {
-	return p => ignores.ignores(slash(path.relative(cwd, ensureAbsolutePathForCwd(cwd, p))));
+	return p => ignores.ignores(slash(path.relative(cwd, ensureAbsolutePathForCwd(cwd, p.path || p))));
 };
 
 const getFile = async (file, cwd) => {
@@ -8383,17 +8765,17 @@ module.exports.sync = options => {
 /***/ }),
 
 /***/ 3398:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
-const fs = __webpack_require__(5747);
-const arrayUnion = __webpack_require__(9600);
-const merge2 = __webpack_require__(2578);
-const fastGlob = __webpack_require__(3664);
-const dirGlob = __webpack_require__(2738);
-const gitignore = __webpack_require__(9038);
-const {FilterStream, UniqueStream} = __webpack_require__(2408);
+const fs = __nccwpck_require__(5747);
+const arrayUnion = __nccwpck_require__(9600);
+const merge2 = __nccwpck_require__(2578);
+const fastGlob = __nccwpck_require__(3664);
+const dirGlob = __nccwpck_require__(2738);
+const gitignore = __nccwpck_require__(9038);
+const {FilterStream, UniqueStream} = __nccwpck_require__(2408);
 
 const DEFAULT_FILTER = () => false;
 
@@ -8413,7 +8795,7 @@ const checkCwdOption = (options = {}) => {
 	let stat;
 	try {
 		stat = fs.statSync(options.cwd);
-	} catch (_) {
+	} catch {
 		return;
 	}
 
@@ -8444,7 +8826,7 @@ const generateGlobTasks = (patterns, taskOptions) => {
 
 		const ignore = patterns
 			.slice(index)
-			.filter(isNegative)
+			.filter(pattern => isNegative(pattern))
 			.map(pattern => pattern.slice(1));
 
 		const options = {
@@ -8526,26 +8908,30 @@ module.exports = async (patterns, options) => {
 module.exports.sync = (patterns, options) => {
 	const globTasks = generateGlobTasks(patterns, options);
 
-	const tasks = globTasks.reduce((tasks, task) => {
+	const tasks = [];
+	for (const task of globTasks) {
 		const newTask = getPattern(task, dirGlob.sync).map(globToTask(task));
-		return tasks.concat(newTask);
-	}, []);
+		tasks.push(...newTask);
+	}
 
 	const filter = getFilterSync(options);
 
-	return tasks.reduce(
-		(matches, task) => arrayUnion(matches, fastGlob.sync(task.pattern, task.options)),
-		[]
-	).filter(path_ => !filter(path_));
+	let matches = [];
+	for (const task of tasks) {
+		matches = arrayUnion(matches, fastGlob.sync(task.pattern, task.options));
+	}
+
+	return matches.filter(path_ => !filter(path_));
 };
 
 module.exports.stream = (patterns, options) => {
 	const globTasks = generateGlobTasks(patterns, options);
 
-	const tasks = globTasks.reduce((tasks, task) => {
+	const tasks = [];
+	for (const task of globTasks) {
 		const newTask = getPattern(task, dirGlob.sync).map(globToTask(task));
-		return tasks.concat(newTask);
-	}, []);
+		tasks.push(...newTask);
+	}
 
 	const filter = getFilterSync(options);
 	const filterStream = new FilterStream(p => !filter(p));
@@ -8568,11 +8954,11 @@ module.exports.gitignore = gitignore;
 /***/ }),
 
 /***/ 2408:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
-const {Transform} = __webpack_require__(2413);
+const {Transform} = __nccwpck_require__(2413);
 
 class ObjectTransform extends Transform {
 	constructor() {
@@ -9253,7 +9639,7 @@ module.exports = function isExtglob(str) {
 /***/ }),
 
 /***/ 4466:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 /*!
  * is-glob <https://github.com/jonschlinkert/is-glob>
@@ -9262,7 +9648,7 @@ module.exports = function isExtglob(str) {
  * Released under the MIT License.
  */
 
-var isExtglob = __webpack_require__(6435);
+var isExtglob = __nccwpck_require__(6435);
 var chars = { '{': '}', '(': ')', '[': ']'};
 var strictRegex = /\\(.)|(^!|\*|[\].+)]\?|\[[^\\\]]+\]|\{[^\\}]+\}|\(\?[:!=][^\\)]+\)|\([^|]+\|[^\\)]+\))/;
 var relaxedRegex = /\\(.)|(^!|[*?{}()[\]]|\(\?)/;
@@ -9334,7 +9720,7 @@ module.exports = function(num) {
 /***/ }),
 
 /***/ 2578:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -9345,7 +9731,7 @@ module.exports = function(num) {
  * Copyright (c) 2014-2020 Teambition
  * Licensed under the MIT license.
  */
-const Stream = __webpack_require__(2413)
+const Stream = __nccwpck_require__(2413)
 const PassThrough = Stream.PassThrough
 const slice = Array.prototype.slice
 
@@ -9486,16 +9872,16 @@ function pauseStreams (streams, options) {
 /***/ }),
 
 /***/ 6228:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const util = __webpack_require__(1669);
-const braces = __webpack_require__(610);
-const picomatch = __webpack_require__(8569);
-const utils = __webpack_require__(479);
-const isEmptyString = val => typeof val === 'string' && (val === '' || val === './');
+const util = __nccwpck_require__(1669);
+const braces = __nccwpck_require__(610);
+const picomatch = __nccwpck_require__(8569);
+const utils = __nccwpck_require__(479);
+const isEmptyString = val => val === '' || val === './';
 
 /**
  * Returns an array of strings that match one or more glob patterns.
@@ -9507,9 +9893,9 @@ const isEmptyString = val => typeof val === 'string' && (val === '' || val === '
  * console.log(mm(['a.js', 'a.txt'], ['*.js']));
  * //=> [ 'a.js' ]
  * ```
- * @param {String|Array<string>} list List of strings to match.
- * @param {String|Array<string>} patterns One or more glob patterns to use for matching.
- * @param {Object} options See available [options](#options)
+ * @param {String|Array<string>} `list` List of strings to match.
+ * @param {String|Array<string>} `patterns` One or more glob patterns to use for matching.
+ * @param {Object} `options` See available [options](#options)
  * @return {Array} Returns an array of matches
  * @summary false
  * @api public
@@ -9604,9 +9990,9 @@ micromatch.matcher = (pattern, options) => picomatch(pattern, options);
  * console.log(mm.isMatch('a.a', ['b.*', '*.a'])); //=> true
  * console.log(mm.isMatch('a.a', 'b.*')); //=> false
  * ```
- * @param {String} str The string to test.
- * @param {String|Array} patterns One or more glob patterns to use for matching.
- * @param {Object} [options] See available [options](#options).
+ * @param {String} `str` The string to test.
+ * @param {String|Array} `patterns` One or more glob patterns to use for matching.
+ * @param {Object} `[options]` See available [options](#options).
  * @return {Boolean} Returns true if any patterns match `str`
  * @api public
  */
@@ -9672,7 +10058,7 @@ micromatch.not = (list, patterns, options = {}) => {
  * @param {String} `str` The string to match.
  * @param {String|Array} `patterns` Glob pattern to use for matching.
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns true if the patter matches any part of `str`.
+ * @return {Boolean} Returns true if any of the patterns matches any part of `str`.
  * @api public
  */
 
@@ -9743,7 +10129,7 @@ micromatch.matchKeys = (obj, patterns, options) => {
  * @param {String|Array} `list` The string or array of strings to test. Returns as soon as the first match is found.
  * @param {String|Array} `patterns` One or more glob patterns to use for matching.
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns true if any patterns match `str`
+ * @return {Boolean} Returns true if any `patterns` matches any of the strings in `list`
  * @api public
  */
 
@@ -9779,7 +10165,7 @@ micromatch.some = (list, patterns, options) => {
  * @param {String|Array} `list` The string or array of strings to test.
  * @param {String|Array} `patterns` One or more glob patterns to use for matching.
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns true if any patterns match `str`
+ * @return {Boolean} Returns true if all `patterns` matches all of the strings in `list`
  * @api public
  */
 
@@ -9845,7 +10231,7 @@ micromatch.all = (str, patterns, options) => {
  * @param {String} `glob` Glob pattern to use for matching.
  * @param {String} `input` String to match
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns an array of captures if the input matches the glob pattern, otherwise `null`.
+ * @return {Array|null} Returns an array of captures if the input matches the glob pattern, otherwise `null`.
  * @api public
  */
 
@@ -9961,7 +10347,7 @@ module.exports = micromatch;
 /***/ }),
 
 /***/ 467:
-/***/ ((module, exports, __webpack_require__) => {
+/***/ ((module, exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -9970,11 +10356,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var Stream = _interopDefault(__webpack_require__(2413));
-var http = _interopDefault(__webpack_require__(8605));
-var Url = _interopDefault(__webpack_require__(8835));
-var https = _interopDefault(__webpack_require__(7211));
-var zlib = _interopDefault(__webpack_require__(8761));
+var Stream = _interopDefault(__nccwpck_require__(2413));
+var http = _interopDefault(__nccwpck_require__(8605));
+var Url = _interopDefault(__nccwpck_require__(8835));
+var https = _interopDefault(__nccwpck_require__(7211));
+var zlib = _interopDefault(__nccwpck_require__(8761));
 
 // Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
 
@@ -10125,7 +10511,7 @@ FetchError.prototype.name = 'FetchError';
 
 let convert;
 try {
-	convert = __webpack_require__(2877).convert;
+	convert = __nccwpck_require__(2877).convert;
 } catch (e) {}
 
 const INTERNALS = Symbol('Body internals');
@@ -11618,12 +12004,12 @@ exports.FetchError = FetchError;
 /***/ }),
 
 /***/ 3433:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
-const {promisify} = __webpack_require__(1669);
-const fs = __webpack_require__(5747);
+const {promisify} = __nccwpck_require__(1669);
+const fs = __nccwpck_require__(5747);
 
 async function isType(fsStatType, statsMethodName, filePath) {
 	if (typeof filePath !== 'string') {
@@ -11669,23 +12055,23 @@ exports.isSymlinkSync = isTypeSync.bind(null, 'lstatSync', 'isSymbolicLink');
 /***/ }),
 
 /***/ 8569:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-module.exports = __webpack_require__(3322);
+module.exports = __nccwpck_require__(3322);
 
 
 /***/ }),
 
 /***/ 6099:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const path = __webpack_require__(5622);
+const path = __nccwpck_require__(5622);
 const WIN_SLASH = '\\\\/';
 const WIN_NO_SLASH = `[^${WIN_SLASH}]`;
 
@@ -11867,13 +12253,13 @@ module.exports = {
 /***/ }),
 
 /***/ 2139:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const constants = __webpack_require__(6099);
-const utils = __webpack_require__(479);
+const constants = __nccwpck_require__(6099);
+const utils = __nccwpck_require__(479);
 
 /**
  * Constants
@@ -12119,7 +12505,7 @@ const parse = (input, options) => {
         output = token.close = `)$))${extglobStar}`;
       }
 
-      if (token.prev.type === 'bos' && eos()) {
+      if (token.prev.type === 'bos') {
         state.negatedExtglob = true;
       }
     }
@@ -12953,16 +13339,16 @@ module.exports = parse;
 /***/ }),
 
 /***/ 3322:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const path = __webpack_require__(5622);
-const scan = __webpack_require__(2429);
-const parse = __webpack_require__(2139);
-const utils = __webpack_require__(479);
-const constants = __webpack_require__(6099);
+const path = __nccwpck_require__(5622);
+const scan = __nccwpck_require__(2429);
+const parse = __nccwpck_require__(2139);
+const utils = __nccwpck_require__(479);
+const constants = __nccwpck_require__(6099);
 const isObject = val => val && typeof val === 'object' && !Array.isArray(val);
 
 /**
@@ -13300,12 +13686,12 @@ module.exports = picomatch;
 /***/ }),
 
 /***/ 2429:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const utils = __webpack_require__(479);
+const utils = __nccwpck_require__(479);
 const {
   CHAR_ASTERISK,             /* * */
   CHAR_AT,                   /* @ */
@@ -13322,7 +13708,7 @@ const {
   CHAR_RIGHT_CURLY_BRACE,    /* } */
   CHAR_RIGHT_PARENTHESES,    /* ) */
   CHAR_RIGHT_SQUARE_BRACKET  /* ] */
-} = __webpack_require__(6099);
+} = __nccwpck_require__(6099);
 
 const isPathSeparator = code => {
   return code === CHAR_FORWARD_SLASH || code === CHAR_BACKWARD_SLASH;
@@ -13536,13 +13922,15 @@ const scan = (input, options) => {
           isBracket = token.isBracket = true;
           isGlob = token.isGlob = true;
           finished = true;
-
-          if (scanToEnd === true) {
-            continue;
-          }
           break;
         }
       }
+
+      if (scanToEnd === true) {
+        continue;
+      }
+
+      break;
     }
 
     if (opts.nonegate !== true && code === CHAR_EXCLAMATION_MARK && index === start) {
@@ -13691,19 +14079,19 @@ module.exports = scan;
 /***/ }),
 
 /***/ 479:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-const path = __webpack_require__(5622);
+const path = __nccwpck_require__(5622);
 const win32 = process.platform === 'win32';
 const {
   REGEX_BACKSLASH,
   REGEX_REMOVE_BACKSLASH,
   REGEX_SPECIAL_CHARS,
   REGEX_SPECIAL_CHARS_GLOBAL
-} = __webpack_require__(6099);
+} = __nccwpck_require__(6099);
 
 exports.isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
 exports.hasRegexChars = str => REGEX_SPECIAL_CHARS.test(str);
@@ -13762,6 +14150,22 @@ exports.wrapOutput = (input, state = {}, options = {}) => {
 
 /***/ }),
 
+/***/ 9795:
+/***/ ((module) => {
+
+/*! queue-microtask. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+let promise
+
+module.exports = typeof queueMicrotask === 'function'
+  ? queueMicrotask.bind(typeof window !== 'undefined' ? window : global)
+  // reuse resolved promise, and allocate it lazily
+  : cb => (promise || (promise = Promise.resolve()))
+    .then(cb)
+    .catch(err => setTimeout(() => { throw err }, 0))
+
+
+/***/ }),
+
 /***/ 2113:
 /***/ ((module) => {
 
@@ -13804,14 +14208,16 @@ module.exports = reusify
 /***/ }),
 
 /***/ 5288:
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 /*! run-parallel. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 module.exports = runParallel
 
+const queueMicrotask = __nccwpck_require__(9795)
+
 function runParallel (tasks, cb) {
-  var results, pending, keys
-  var isSync = true
+  let results, pending, keys
+  let isSync = true
 
   if (Array.isArray(tasks)) {
     results = []
@@ -13827,7 +14233,7 @@ function runParallel (tasks, cb) {
       if (cb) cb(err, results)
       cb = null
     }
-    if (isSync) process.nextTick(end)
+    if (isSync) queueMicrotask(end)
     else end()
   }
 
@@ -13879,7 +14285,7 @@ module.exports = path => {
 /***/ }),
 
 /***/ 1861:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 /*!
@@ -13891,7 +14297,7 @@ module.exports = path => {
 
 
 
-const isNumber = __webpack_require__(5680);
+const isNumber = __nccwpck_require__(5680);
 
 const toRegexRange = (min, max, options) => {
   if (isNumber(min) === false) {
@@ -14276,10 +14682,11 @@ module.exports = require("zlib");;
 /******/ 	var __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -14291,7 +14698,7 @@ module.exports = require("zlib");;
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
-/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nccwpck_require__);
 /******/ 			threw = false;
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
@@ -14304,11 +14711,14 @@ module.exports = require("zlib");;
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__webpack_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
+/******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(3109);
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(3109);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
