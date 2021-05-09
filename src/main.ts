@@ -4,6 +4,7 @@ import * as fs from 'fs'
 import { join, basename } from 'path'
 import { makeUpload } from './upload'
 import { asBoolean, isDirectory } from './utils'
+import { DropboxResponseError } from 'dropbox'
 
 const accessToken = core.getInput('dropbox_access_token')
 const src = core.getInput('src')
@@ -40,6 +41,9 @@ async function run() {
       )
     }
   } catch (error) {
+    if (error instanceof DropboxResponseError) {
+      core.error(error.error)
+    }
     core.setFailed(error)
   }
 }
