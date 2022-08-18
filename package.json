@@ -27,7 +27,7 @@
   "author": "Deka <dekachan16@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.7",
+    "@actions/core": "^1.9.1",
     "dropbox": "^9.7.0",
     "globby": "^11.0.3",
     "node-fetch": "^2.6.1"
