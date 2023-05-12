@@ -3,25 +3,28 @@ import * as core from '@actions/core'
 import * as fs from 'fs'
 import { join, basename } from 'path'
 import { makeUpload } from './upload'
-import { asBoolean, isDirectory } from './utils'
 import { DropboxResponseError } from 'dropbox'
 
-const accessToken = core.getInput('dropbox_access_token')
-const src = core.getInput('src')
-const dest = core.getInput('dest')
-const multiple = asBoolean(core.getInput('multiple'))
+function asBoolean(s: string): boolean {
+  return s.toLowerCase() === 'true'
+}
 
-const mode = core.getInput('mode')
-const autorename = asBoolean(core.getInput('autorename'))
-const mute = asBoolean(core.getInput('mute'))
+async function main() {
+  const accessToken = core.getInput('dropbox_access_token')
+  const src = core.getInput('src')
+  const dest = core.getInput('dest')
+  const multiple = asBoolean(core.getInput('multiple'))
 
-async function run() {
+  const mode = core.getInput('mode')
+  const autorename = asBoolean(core.getInput('autorename'))
+  const mute = asBoolean(core.getInput('mute'))
+
   try {
     const { upload } = makeUpload(accessToken)
 
     if (!multiple) {
       const contents = await fs.promises.readFile(src)
-      if (isDirectory(dest)) {
+      if (dest.endsWith('/')) {
         const path = join(dest, basename(src))
         await upload(path, contents, { mode, autorename, mute })
         core.info(`Uploaded: ${src} -> ${path}`)
@@ -48,4 +51,4 @@ async function run() {
   }
 }
 
-void run()
+void main()
