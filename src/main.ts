@@ -1,4 +1,4 @@
-import globby from 'globby'
+import { globby } from 'globby'
 import * as core from '@actions/core'
 import * as fs from 'fs'
 import { join, basename } from 'path'
@@ -32,7 +32,7 @@ async function run() {
     } else {
       const files = await globby(src)
       await Promise.all(
-        files.map(async (file) => {
+        files.map(async (file: string) => {
           const path = join(dest, file)
           const contents = await fs.promises.readFile(file)
           await upload(path, contents, { mode, autorename, mute })
@@ -40,7 +40,7 @@ async function run() {
         })
       )
     }
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof DropboxResponseError) {
       core.error(error.error)
     }
